@@ -34,9 +34,7 @@ RUN apt-get update && \
     zip && \
     apt-get clean all -y
 
-RUN mkdir /builds \
-    /builds/tooltool_cache \
-    /builds/tooltool-manifests && \
+RUN mkdir /builds && \
     useradd -d /builds/worker -s /bin/bash -m worker
 
 # https://docs.docker.com/samples/library/ubuntu/#locales
@@ -80,7 +78,6 @@ COPY .bashrc /builds/worker/.bashrc
 COPY version /builds/worker/version
 COPY taskcluster /builds/taskcluster
 COPY licenses /builds/worker/android-sdk-linux/licenses
-COPY tooltool-manifests /builds/tooltool-manifests
 
 # Add entrypoint script
 COPY scripts/entrypoint.py /usr/local/bin/entrypoint.py
