@@ -1,0 +1,14 @@
+{
+    "accessToken":                "${TASKCLUSTER_ACCESS_TOKEN}",
+    "certificate":                "",
+    "clientId":                   "${TASKCLUSTER_CLIENT_ID}",
+    "ed25519SigningKeyLocation":  "/builds/worker/tmp/ed25519_private_key",
+    "livelogSecret":              "${LIVELOG_SECRET}",
+    "openpgpSigningKeyLocation":  "/builds/worker/tmp/openpgp_private_key",
+    "provisionerId":              "proj-autophone",
+    "publicIP":                   "127.0.0.1",
+    "rootURL":                    "https://taskcluster.net",
+    "workerGroup":                "${TC_WORKER_GROUP}",
+    "workerId":                   "${DEVICE_NAME}",
+    "workerType":                 "${TC_WORKER_TYPE}"
+}
