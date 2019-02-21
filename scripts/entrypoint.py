@@ -44,7 +44,7 @@ def dump_scriptvars():
 
     with open('/builds/taskcluster/scriptvars.env', 'w') as scriptvarsb:
         for item in variables:
-            scriptvarsb.write("%s=\"%s\"\n" % (item, variables[item]))
+            scriptvarsb.write("export %s=\"%s\"\n" % (item, variables[item]))
 
     with open('/builds/taskcluster/scriptvars.json', 'w') as scriptvars:
         scriptvars.write(json.dumps(variables))
