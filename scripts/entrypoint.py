@@ -42,7 +42,7 @@ def dump_scriptvars():
     )
     variables = dict( (k, get_envvar(k)) for k in names )
 
-    with open('/builds/taskcluster/scriptvars.bash', 'w') as scriptvarsb:
+    with open('/builds/taskcluster/scriptvars.env', 'w') as scriptvarsb:
         for item in variables:
             scriptvarsb.write("%s=\"%s\"\n" % (item, variables[item]))
 
