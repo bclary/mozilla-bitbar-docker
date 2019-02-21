@@ -20,9 +20,8 @@ export ED25519_PRIVKEY="$CONF_PATH/ed25519_private_key"
 export OPENPGP_PRIVKEY="$CONF_PATH/openpgp_private_key"
 # we're not using livelog yet, set key to something so g-w will start
 export LIVELOG_SECRET='not_a_key'
-# user.Current requires cgo, but cross-compilation doesn't enable cgo
-# this works around the issue (see https://github.com/golang/go/issues/14625
-# and https://github.com/ksonnet/ksonnet/issues/298)
+# generic-worker docker hack.
+# see https://github.com/taskcluster/generic-worker/issues/151
 export USER=root
 
 # write a limited set of environment variables to file
