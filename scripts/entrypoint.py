@@ -28,8 +28,9 @@ def dump_scriptvars():
         "TESTDROID_RUN_ID",
         "HOME",
         "HOSTNAME",
-        "TASKCLUSTER_ACCESS_TOKEN",
-        "TASKCLUSTER_CLIENT_ID",
+        # these are passed to g-w via config file
+        # "TASKCLUSTER_ACCESS_TOKEN",
+        # "TASKCLUSTER_CLIENT_ID",
         "HOST_IP",
         "DEVICE_NAME",
         "ANDROID_DEVICE",
@@ -37,11 +38,22 @@ def dump_scriptvars():
         "TC_WORKER_GROUP",
         "TC_WORKER_TYPE",
         "DEVICE_IP",
+        "USER",
     )
-    variables = dict( (k, os.environ[k]) for k in names )
+    variables = dict( (k, get_envvar(k)) for k in names )
+
+    with open('/builds/taskcluster/scriptvars.bash', 'w') as scriptvarsb:
+        for item in variables:
+            scriptvarsb.write("%s=\"%s\"\n" % (item, variables[item]))
 
     with open('/builds/taskcluster/scriptvars.json', 'w') as scriptvars:
         scriptvars.write(json.dumps(variables))
+
+# returns empty string if not defined
+def get_envvar(name):
+    if name in os.environ:
+        return os.environ[name]
+    return ''
 
 def main():
     dump_scriptvars()
