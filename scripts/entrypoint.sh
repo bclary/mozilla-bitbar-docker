@@ -15,7 +15,7 @@ if [[ -e /test ]]; then
     ls -la /test
 fi
 
-WORK_PATH='/builds/taskcluster/'
+WORK_PATH='/builds/taskcluster'
 export ED25519_PRIVKEY="$WORK_PATH/ed25519_private_key"
 export OPENPGP_PRIVKEY="$WORK_PATH/openpgp_private_key"
 # we're not using livelog yet, set key to something so g-w will start
