@@ -15,9 +15,9 @@ if [[ -e /test ]]; then
     ls -la /test
 fi
 
-WORK_PATH='/builds/taskcluster'
-export ED25519_PRIVKEY="$WORK_PATH/ed25519_private_key"
-export OPENPGP_PRIVKEY="$WORK_PATH/openpgp_private_key"
+CONF_PATH='/builds/taskcluster'
+export ED25519_PRIVKEY="$CONF_PATH/ed25519_private_key"
+export OPENPGP_PRIVKEY="$CONF_PATH/openpgp_private_key"
 # we're not using livelog yet, set key to something so g-w will start
 export LIVELOG_SECRET='not_a_key'
 # user.Current requires cgo, but cross-compilation doesn't enable cgo
@@ -31,6 +31,6 @@ entrypoint.py
 cd $HOME
 generic-worker new-ed25519-keypair --file $ED25519_PRIVKEY
 generic-worker new-openpgp-keypair --file $OPENPGP_PRIVKEY
-envsubst < $WORK_PATH/generic-worker.yml.template > $WORK_PATH/generic-worker.yml
+envsubst < $CONF_PATH/generic-worker.yml.template > $CONF_PATH/generic-worker.yml
 
-exec generic-worker run --config $WORK_PATH/generic-worker.yml
+exec generic-worker run --config $CONF_PATH/generic-worker.yml
