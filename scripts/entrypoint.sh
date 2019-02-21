@@ -32,5 +32,5 @@ generic-worker new-ed25519-keypair --file $ED25519_PRIVKEY
 generic-worker new-openpgp-keypair --file $OPENPGP_PRIVKEY
 envsubst < $CONF_PATH/generic-worker.yml.template > $CONF_PATH/generic-worker.yml
 
-# TODO: run g-w in a shell with emptied out environ
-exec generic-worker run --config $CONF_PATH/generic-worker.yml
+# run g-w in a shell with an almost-empty environ
+exec env -i bash -c ". $CONF_PATH/scriptvars.env && generic-worker run --config $CONF_PATH/generic-worker.yml"
