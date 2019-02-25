@@ -201,7 +201,7 @@ def main():
     except subprocess.CalledProcessError as e:
         print('{} attempting netstat'.format(e))
 
-    print('payload.py exitcode {}'.format(rc))
+    print('script.py exitcode {}'.format(rc))
     if rc == 0:
         return 0
     return 1
