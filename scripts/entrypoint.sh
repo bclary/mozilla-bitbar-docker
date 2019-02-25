@@ -33,4 +33,7 @@ generic-worker new-openpgp-keypair --file $OPENPGP_PRIVKEY
 envsubst < $CONF_PATH/generic-worker.yml.template > $CONF_PATH/generic-worker.yml
 
 # run g-w in a shell with an almost-empty environ
-exec env -i bash -c ". $CONF_PATH/scriptvars.env && generic-worker run --config $CONF_PATH/generic-worker.yml"
+# exec env -i bash -c ". $CONF_PATH/scriptvars.env && generic-worker run --config $CONF_PATH/generic-worker.yml"
+
+# run script.py in a shell with an almost-empty environ
+exec env -i bash -c ". $CONF_PATH/scriptvars.env && /builds/taskcluster/script.py"
