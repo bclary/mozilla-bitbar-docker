@@ -12,5 +12,5 @@
     "workerId":                   "${DEVICE_NAME}",
     "workerType":                 "${TC_WORKER_TYPE}",
     "numberOfTasksToRun":         1,
-    "idleTimeoutSecs":            180
+    "idleTimeoutSecs":            90
 }
