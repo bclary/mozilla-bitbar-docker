@@ -171,7 +171,7 @@ def main():
     #     sys.stdout.write(line)
     #     rc = proc.poll()
 
-    args = ['generic-worker', 'run', '--config', '/buids/taskcluster/generic-worker.yml']
+    args = ['generic-worker', 'run', '--config', '/builds/taskcluster/generic-worker.yml']
     print(' '.join(args))
     rc = None
     proc = subprocess.Popen(args,
