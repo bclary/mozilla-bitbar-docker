@@ -13,5 +13,5 @@
     "workerType":                 "${TC_WORKER_TYPE}",
     "numberOfTasksToRun":         1,
     "idleTimeoutSecs":            90,
-    "requiredDiskSpaceMegabytes"  7000
+    "requiredDiskSpaceMegabytes": 7000
 }
