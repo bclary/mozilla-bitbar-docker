@@ -86,13 +86,13 @@ def main():
     # if 'TASKCLUSTER_WORKER_TYPE' not in env:
     #     fatal('TASKCLUSTER_WORKER_TYPE is missing.')
 
-    if 'WORKSPACE' not in env:
-        env['WORKSPACE'] = os.path.join(env['HOME'], 'workspace')
-        print('setting WORKSPACE to {}'.format(env['WORKSPACE']))
-    workspace = env['WORKSPACE']
-    if not os.path.exists(workspace):
-        print('Creating {}'.format(workspace))
-        os.mkdir(workspace)
+    #if 'WORKSPACE' not in env:
+    #    env['WORKSPACE'] = os.path.join(env['HOME'], 'workspace')
+    #    print('setting WORKSPACE to {}'.format(env['WORKSPACE']))
+    #workspace = env['WORKSPACE']
+    #if not os.path.exists(workspace):
+    #    print('Creating {}'.format(workspace))
+    #    os.mkdir(workspace)
 
     # If we are running normal tests we will be connected via usb and
     # there should be only one device connected.  If we are running
@@ -176,7 +176,7 @@ def main():
     rc = None
     proc = subprocess.Popen(args,
                             env=env,
-                            cwd=workspace,
+    #                        cwd=workspace,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
     while rc == None:
