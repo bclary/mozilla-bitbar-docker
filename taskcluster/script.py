@@ -53,6 +53,10 @@ def main():
             scriptvarsenv['TESTDROID_BUILD_ID'],
             scriptvarsenv['TESTDROID_RUN_ID']))
 
+    payload = json.loads(sys.stdin.read())
+
+    print('payload = {}'.format(json.dumps(payload, indent=4)))
+
     env = dict(os.environ)
 
     if 'PATH' in os.environ:
@@ -119,7 +123,10 @@ def main():
 
     print('environment = {}'.format(json.dumps(env, indent=4)))
 
-    args = ['generic-worker', 'run', '--config', '/builds/taskcluster/generic-worker.yml']
+    # Use a login shell to get the required environment for the unit
+    # test scripts to detect sys.executable correctly.  Execute the
+    # context script in the directory /builds/worker/workspace.
+    args = ['bash', '-l', '-c', ' '.join(payload['command'])]
     print(' '.join(args))
     rc = None
     proc = subprocess.Popen(args,
