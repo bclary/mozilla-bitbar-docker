@@ -126,7 +126,7 @@ def main():
     # Use a login shell to get the required environment for the unit
     # test scripts to detect sys.executable correctly.  Execute the
     # context script in the directory /builds/worker/workspace.
-    args = ['bash', '-l', '-c', ' '.join(payload['command'])]
+    args = ['bash', '-l', '-c', ' '.join(payload['scriptpy_command'])]
     print(' '.join(args))
     rc = None
     proc = subprocess.Popen(args,
