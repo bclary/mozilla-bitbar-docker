@@ -1,0 +1,17 @@
+{
+    "accessToken":                "${TASKCLUSTER_ACCESS_TOKEN}",
+    "certificate":                "",
+    "clientId":                   "${TASKCLUSTER_CLIENT_ID}",
+    "ed25519SigningKeyLocation":  "${ED25519_PRIVKEY}",
+    "livelogSecret":              "${LIVELOG_SECRET}",
+    "openpgpSigningKeyLocation":  "${OPENPGP_PRIVKEY}",
+    "provisionerId":              "proj-autophone",
+    "publicIP":                   "127.0.0.1",
+    "rootURL":                    "https://taskcluster.net",
+    "workerGroup":                "${TC_WORKER_GROUP}",
+    "workerId":                   "${DEVICE_NAME}",
+    "workerType":                 "${TC_WORKER_TYPE}",
+    "numberOfTasksToRun":         1,
+    "idleTimeoutSecs":            90,
+    "requiredDiskSpaceMegabytes": 7000
+}

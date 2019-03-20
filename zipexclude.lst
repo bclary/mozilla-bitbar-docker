@@ -4,5 +4,6 @@
 LICENSE
 README.md
 build.sh
+downloads/*
 build/*
 zipexclude.lst
