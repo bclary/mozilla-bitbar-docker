@@ -56,7 +56,7 @@ Execute the [mozilla-docker-build](https://mozilla.testdroid.com/#testing/projec
 `mozilla-docker-CCYYMMDDTHHMMSS.zip` file as the test file with
 additional parameter `DOCKER_IMAGE_VERSION=CCYYMMDDTHHMMSS`.
 
-### testing
+### Testing
 
 ```bash
 pip install pipenv
