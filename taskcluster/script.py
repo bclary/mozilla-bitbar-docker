@@ -128,11 +128,7 @@ def main():
 
     print('environment = {}'.format(json.dumps(env, indent=4)))
 
-    # # Use a login shell to get the required environment for the unit
-    # # test scripts to detect sys.executable correctly.
-    # args = ['bash', '-l', '-c']
-    # test_command = '"%s"' % (' '.join(find_command_in_args(sys.argv)))
-    # args.append(test_command)
+    # run the payload's command (passed in as args)
     args = find_command_in_args(sys.argv)
     print(' '.join(args))
     rc = None
