@@ -124,9 +124,8 @@ def main():
     print('environment = {}'.format(json.dumps(env, indent=4)))
 
     # Use a login shell to get the required environment for the unit
-    # test scripts to detect sys.executable correctly.  Execute the
-    # context script in the directory /builds/worker/workspace.
-    args = ['bash', '-l', '-c', ' '.join(payload['original-command'])]
+    # test scripts to detect sys.executable correctly.
+    args = ['bash', '-l', '-c', ' '.join(sys.argv[1:])]
     print(' '.join(args))
     rc = None
     proc = subprocess.Popen(args,
