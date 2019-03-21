@@ -53,10 +53,6 @@ def main():
             scriptvarsenv['TESTDROID_BUILD_ID'],
             scriptvarsenv['TESTDROID_RUN_ID']))
 
-    payload = json.loads(sys.stdin.read())
-
-    print('payload = {}'.format(json.dumps(payload, indent=4)))
-
     env = dict(os.environ)
 
     if 'PATH' in os.environ:
