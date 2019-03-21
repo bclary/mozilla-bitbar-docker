@@ -58,7 +58,7 @@ additional parameter `DOCKER_IMAGE_VERSION=CCYYMMDDTHHMMSS`.
 
 ### testing
 
-```
+```bash
 pip install pipenv
 pipenv install
 pipenv shell
