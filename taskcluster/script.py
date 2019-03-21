@@ -131,8 +131,8 @@ def main():
     # Use a login shell to get the required environment for the unit
     # test scripts to detect sys.executable correctly.
     args = ['bash', '-l', '-c']
-    test_command = find_command_in_args(sys.argv)
-    args.extend(test_command)
+    test_command = '"%s"' % (' '.join(find_command_in_args(sys.argv)))
+    args.append(test_command)
     print(' '.join(args))
     rc = None
     proc = subprocess.Popen(args,
