@@ -55,3 +55,12 @@ files. This file **can be** shared publicly.
 Execute the [mozilla-docker-build](https://mozilla.testdroid.com/#testing/projects/208991) mozilla bitbar project using the
 `mozilla-docker-CCYYMMDDTHHMMSS.zip` file as the test file with
 additional parameter `DOCKER_IMAGE_VERSION=CCYYMMDDTHHMMSS`.
+
+### testing
+
+```
+pip install pipenv
+pipenv install
+pipenv shell
+pytest taskcluster
+```
