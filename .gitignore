@@ -3,3 +3,4 @@ version
 licenses/
 build/
 downloads/
+*.pyc
