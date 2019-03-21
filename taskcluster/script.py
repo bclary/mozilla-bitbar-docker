@@ -4,6 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+# usage: ./script.py -- ./test_command --option1 blue --option2 green
+
 import json
 import logging
 import os
@@ -18,6 +20,13 @@ from mozdevice import ADBAndroid, ADBHost, ADBError
 
 MAX_NETWORK_ATTEMPTS = 3
 
+
+# search for the command in the args following --
+def find_command_in_args(an_argv):
+    for i in range(0, (len(an_argv) - 1)):
+        if an_argv[i].strip() == '--':
+            return an_argv[i + 1:]
+    raise Exception("A command must be provided after '--'!")
 
 def fatal(message):
     """Emit an error message and exit the process with status
@@ -121,7 +130,9 @@ def main():
 
     # Use a login shell to get the required environment for the unit
     # test scripts to detect sys.executable correctly.
-    args = ['bash', '-l', '-c', ' '.join(sys.argv[1:])]
+    args = ['bash', '-l', '-c']
+    test_command = find_command_in_args(sys.argv)
+    args.extend(test_command)
     print(' '.join(args))
     rc = None
     proc = subprocess.Popen(args,
