@@ -70,6 +70,9 @@ ADD https://dl.google.com/android/android-sdk_r24.3.4-linux.tgz /builds/worker/D
 ADD https://github.com/taskcluster/generic-worker/releases/download/v13.0.4/generic-worker-linux-amd64 /usr/local/bin/generic-worker
 #COPY downloads/generic-worker-linux-amd64 /usr/local/bin/generic-worker
 
+ADD https://github.com/taskcluster/livelog/releases/download/v1.1.0/livelog-linux-amd64 /usr/local/bin/livelog
+#COPY downloads/livelog-linux-amd64 /usr/local/bin/livelog
+
 ADD https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip /builds/worker/Downloads
 #COPY downloads/sdk-tools-linux-4333796.zip /builds/worker/Downloads
 
@@ -93,6 +96,7 @@ COPY scripts/tooltool.py /usr/local/bin/tooltool.py
 
 RUN cd /tmp && \
     chmod +x /usr/local/bin/generic-worker && \
+    chmod +x /usr/local/bin/livelog && \
     chmod +x /usr/local/bin/tooltool.py && \
     chmod +x /usr/local/bin/entrypoint.* && \
     chmod +x /builds/taskcluster/script.py && \
