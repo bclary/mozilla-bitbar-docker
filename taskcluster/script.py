@@ -6,6 +6,7 @@
 
 # usage: ./script.py -- ./test_command --option1 blue --option2 green
 
+import argparse
 import json
 import logging
 import os
@@ -21,13 +22,6 @@ from mozdevice import ADBAndroid, ADBHost, ADBError
 MAX_NETWORK_ATTEMPTS = 3
 
 
-# search for the command in the args following --
-def find_command_in_args(an_argv):
-    for i in range(0, (len(an_argv) - 1)):
-        if an_argv[i].strip() == '--':
-            return an_argv[i + 1:]
-    raise Exception("A command must be provided after '--'!")
-
 def fatal(message):
     """Emit an error message and exit the process with status
     TBPL_RETRY_EXIT_STATUS this will cause the job to be retried.
@@ -40,7 +34,7 @@ def fatal(message):
     print('TEST-UNEXPECTED-FAIL | bitbar | {}'.format(message))
     sys.exit(TBPL_RETRY_EXIT_STATUS)
 
-def main():
+def main(test_cmd_array):
     logging.basicConfig(format='%(asctime)-15s %(levelname)s %(message)s',
                         level=logging.INFO,
                         stream=sys.stdout)
@@ -128,11 +122,10 @@ def main():
 
     print('environment = {}'.format(json.dumps(env, indent=4)))
 
-    # run the payload's command (passed in as args)
-    args = find_command_in_args(sys.argv)
-    print(' '.join(args))
+    # run the payload's command
+    print(' '.join(test_cmd_array))
     rc = None
-    proc = subprocess.Popen(args,
+    proc = subprocess.Popen(test_cmd_array,
                             env=env,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
@@ -162,4 +155,7 @@ def main():
     return 1
 
 if __name__ == "__main__":
-    sys.exit(main())
+    parser = argparse.ArgumentParser()
+    # no args for script.py yet
+    _args, extra_args = parser.parse_known_args()
+    sys.exit(main(extra_args))
