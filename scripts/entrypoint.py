@@ -28,9 +28,6 @@ def dump_scriptvars():
         "TESTDROID_RUN_ID",
         "HOME",
         "HOSTNAME",
-        # these are passed to g-w via config file
-        # "TASKCLUSTER_ACCESS_TOKEN",
-        # "TASKCLUSTER_CLIENT_ID",
         "HOST_IP",
         "DEVICE_NAME",
         "ANDROID_DEVICE",
