@@ -35,8 +35,9 @@ def fatal(message):
     sys.exit(TBPL_RETRY_EXIT_STATUS)
 
 def main():
-    parser = argparse.ArgumentParser()
-    # no args for script.py yet
+    parser = argparse.ArgumentParser(
+        usage='%(prog)s [options] <test command> (<test command option> ...)',
+        description="Wrapper script for tests run on physical Android devices at Bitbar. Runs the provided command wrapped with required setup and teardown.")
     _args, extra_args = parser.parse_known_args()
     logging.basicConfig(format='%(asctime)-15s %(levelname)s %(message)s',
                         level=logging.INFO,
