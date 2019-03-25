@@ -3,6 +3,7 @@
     "certificate":                "",
     "clientId":                   "${TASKCLUSTER_CLIENT_ID}",
     "ed25519SigningKeyLocation":  "${ED25519_PRIVKEY}",
+    "livelogExecutable":          "/usr/local/bin/livelog",
     "livelogSecret":              "${LIVELOG_SECRET}",
     "openpgpSigningKeyLocation":  "${OPENPGP_PRIVKEY}",
     "provisionerId":              "proj-autophone",
