@@ -34,7 +34,10 @@ def fatal(message):
     print('TEST-UNEXPECTED-FAIL | bitbar | {}'.format(message))
     sys.exit(TBPL_RETRY_EXIT_STATUS)
 
-def main(test_cmd_array):
+def main():
+    parser = argparse.ArgumentParser()
+    # no args for script.py yet
+    _args, extra_args = parser.parse_known_args()
     logging.basicConfig(format='%(asctime)-15s %(levelname)s %(message)s',
                         level=logging.INFO,
                         stream=sys.stdout)
@@ -123,9 +126,9 @@ def main(test_cmd_array):
     print('environment = {}'.format(json.dumps(env, indent=4)))
 
     # run the payload's command
-    print(' '.join(test_cmd_array))
+    print(' '.join(extra_args))
     rc = None
-    proc = subprocess.Popen(test_cmd_array,
+    proc = subprocess.Popen(extra_args,
                             env=env,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
@@ -155,7 +158,4 @@ def main(test_cmd_array):
     return 1
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    # no args for script.py yet
-    _args, extra_args = parser.parse_known_args()
-    sys.exit(main(extra_args))
+    sys.exit(main())
