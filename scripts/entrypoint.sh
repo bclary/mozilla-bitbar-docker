@@ -32,5 +32,10 @@ generic-worker new-ed25519-keypair --file $ED25519_PRIVKEY
 generic-worker new-openpgp-keypair --file $OPENPGP_PRIVKEY
 envsubst < $CONF_PATH/generic-worker.yml.template > $CONF_PATH/generic-worker.yml
 
+mkdir -p /builds/worker/.android/
+# bitbar mounts this file into root's homedir, but with g-w adb
+# is looking for it worker's homedir
+ln -sf /root/.android/adbkey /builds/worker/.android/adbkey || true
+
 # run g-w in a shell with an almost-empty environ
 exec env -i bash -c ". $CONF_PATH/scriptvars.env && generic-worker run --config $CONF_PATH/generic-worker.yml"
