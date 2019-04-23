@@ -36,6 +36,7 @@ def dump_scriptvars():
         "TC_WORKER_TYPE",
         "DEVICE_IP",
         "USER",
+        "PATH",
     )
     variables = dict( (k, get_envvar(k)) for k in names )
 
