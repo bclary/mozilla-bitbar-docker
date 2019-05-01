@@ -109,6 +109,7 @@ RUN cd /tmp && \
     unzip -qq -n /builds/worker/Downloads/sdk-tools-linux-4333796.zip -d /builds/worker/android-sdk-linux/ || true && \
     /builds/worker/android-sdk-linux/tools/bin/sdkmanager platform-tools "build-tools;28.0.3" && \
     pip install mozdevice==2.0.1 && \
+    pip install google-cloud-logging && \
     chown -R root:root /builds/worker/.cache && \
     rm -rf /tmp/* && \
     rm -rf /var/lib/apt/lists/* && \
