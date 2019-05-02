@@ -24,7 +24,6 @@ class ScriptPy:
 
     def __init__(self):
         self.stackdriver_client = google.cloud.logging.Client()
-
         self.stackdriver_client.setup_logging()
 
     def fatal(self, message):
