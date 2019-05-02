@@ -2,14 +2,12 @@
 
 set -e
 
-# TODO: explode if google secrets file isn't present
-#   export GOOGLE_APPLICATION_CREDENTIALS='not_a_key'
-if [ -e "stackdriver_credentials" ]; then
-    creds=`cat stackdriver_credentials`
-else
+# explode if google secrets file isn't present
+if [ ! -e "stackdriver_credentials" ]; then
     echo "Please create the 'stackdriver_credentials' file."
     exit 1
 fi
+creds=`cat stackdriver_credentials`
 
 # find and replace in entrypoint.sh to define var
 # - should work on gnu and bsd sed
