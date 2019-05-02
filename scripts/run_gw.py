@@ -12,6 +12,9 @@ import google.cloud.logging
 # runs a command and:
 # - print to stdout & stderr
 # - log to papertrail
+script_name = sys.argv[0]
+scriptvars_json_file = '/builds/taskcluster/scriptvars.json'
+gw_config_file = "/builds/taskcluster/generic-worker.yml"
 
 cmd_str = "generic-worker run --config %s" % gw_config_file
 cmd_arr = cmd_str.split(" ")
@@ -27,10 +30,6 @@ def log_to_pt(message):
 # setup stackdriver
 stackdriver_client = google.cloud.logging.Client()
 stackdriver_client.setup_logging()
-
-script_name = sys.argv[0]
-scriptvars_json_file = '/builds/taskcluster/scriptvars.json'
-gw_config_file = "/builds/taskcluster/generic-worker.yml"
 
 # load json with env vars if it exists
 scriptvars_json = None
