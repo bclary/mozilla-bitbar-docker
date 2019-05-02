@@ -7,4 +7,4 @@ build.sh
 downloads/*
 build/*
 zipexclude.lst
-stackdriver_credentials
+stackdriver_credentials.json

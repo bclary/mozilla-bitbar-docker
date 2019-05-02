@@ -2,12 +2,13 @@
 
 set -e
 
+sd_cred_file="stackdriver_credentials.json"
 # explode if google secrets file isn't present
-if [ ! -e "stackdriver_credentials" ]; then
-    echo "Please create the 'stackdriver_credentials' file."
+if [ ! -e "$sd_cred_file" ]; then
+    echo "Please create the '$sd_cred_file' file."
     exit 1
 fi
-creds=`cat stackdriver_credentials`
+creds=`cat $sd_cred_file`
 
 # find and replace in entrypoint.sh to define var
 # - should work on gnu and bsd sed
