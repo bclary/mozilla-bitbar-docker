@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import exceptions
 import json
 import logging
 import os
@@ -15,7 +16,7 @@ try:
         stackdriver_client.setup_logging()
     except google.auth.exceptions.DefaultCredentialsError:
         print("WARNING: Stackdriver credentials missing. Stackdriver is not functional.")
-except NameError, ImportError:
+except exceptions.NameError, exceptions.ImportError:
     print("WARNING: Could not import google.cloud.logging! Stackdriver is not functional.")
 
 # run g-w in a shell with an almost-empty environ
