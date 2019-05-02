@@ -7,7 +7,16 @@ import socket
 import subprocess
 import sys
 
-import google.cloud.logging
+try:
+    try:
+        import google.cloud.logging
+        # setup stackdriver
+        stackdriver_client = google.cloud.logging.Client()
+        stackdriver_client.setup_logging()
+    except google.auth.exceptions.DefaultCredentialsError:
+        print("WARNING: Stackdriver credentials missing. Stackdriver is not functional.")
+except NameError, ImportError:
+    print("WARNING: Could not import google.cloud.logging! Stackdriver is not functional.")
 
 # run g-w in a shell with an almost-empty environ
 # - print to stdout & stderr
@@ -25,10 +34,6 @@ cmd_str = "generic-worker run --config %s" % gw_config_file
 cmd_arr = cmd_str.split(" ")
 # testing mode
 # cmd_arr = sys.argv[1:]
-
-# setup stackdriver
-stackdriver_client = google.cloud.logging.Client()
-stackdriver_client.setup_logging()
 
 # load json with env vars if it exists
 scriptvars_json = None
