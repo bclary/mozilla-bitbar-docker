@@ -41,4 +41,5 @@ mkdir -p /builds/worker/.android/
 ln -sf /root/.android/adbkey /builds/worker/.android/adbkey || true
 
 # run g-w in a shell with an almost-empty environ
-exec env -i bash -c ". $CONF_PATH/scriptvars.env && generic-worker run --config $CONF_PATH/generic-worker.yml"
+# exec env -i bash -c ". $CONF_PATH/scriptvars.env && generic-worker run --config $CONF_PATH/generic-worker.yml"
+run_gw.py
