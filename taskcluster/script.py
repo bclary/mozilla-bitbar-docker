@@ -40,6 +40,7 @@ class ScriptPy:
 
     # prints and logs to stackdriver
     def print_and_log(self, message):
+        # TODO: prefix log messages with host?
         logging.info(message)
         print(message)
 
