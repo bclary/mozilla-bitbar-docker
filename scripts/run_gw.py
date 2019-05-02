@@ -9,7 +9,7 @@ import sys
 
 import google.cloud.logging
 
-# runs a command and:
+# run g-w in a shell with an almost-empty environ
 # - print to stdout & stderr
 # - log to papertrail
 
