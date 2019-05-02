@@ -1,9 +1,19 @@
 #!/bin/bash
 
+set -e
+
 # TODO: explode if google secrets file isn't present
-# TODO: find and replace in entrypoint.sh to define var
 #   export GOOGLE_APPLICATION_CREDENTIALS='not_a_key'
-sed -i -e 's/export GOOGLE_APPLICATION_CREDENTIALS=\\"not_a_key\\"/export GOOGLE_APPLICATION_CREDENTIALS=\\"key_here\\"/g' scripts/entrypoint.sh
+if [ -e "stackdriver_credentials" ]; then
+    creds=`cat stackdriver_credentials`
+else
+    echo "Please create the 'stackdriver_credentials' file."
+    exit 1
+fi
+
+# find and replace in entrypoint.sh to define var
+# - should work on gnu and bsd sed
+sed -i.bak "s/export GOOGLE_APPLICATION_CREDENTIALS='not_a_key'/export GOOGLE_APPLICATION_CREDENTIALS='$creds'/g" scripts/entrypoint.sh
 
 workdir=$(dirname $0)
 pushd $workdir
@@ -19,4 +29,5 @@ zip -r build/mozilla-docker-$datelabel-public.zip . -x@zipexclude.lst
 
 popd
 
-# TODO: undo edit of entrypoint.sh
+# undo edit of entrypoint.sh
+mv scripts/entrypoint.sh.bak scripts/entrypoint.sh
