@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: explode if google secrets file isn't present
+
 workdir=$(dirname $0)
 pushd $workdir
 
