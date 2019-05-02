@@ -12,20 +12,20 @@ import google.cloud.logging
 # runs a command and:
 # - print to stdout & stderr
 # - log to papertrail
+
+def log_to_pt(message):
+    # TODO: prefix log messages with host?
+    logging.info("%s: %s" % (hostname, message))
+
 script_name = sys.argv[0]
 scriptvars_json_file = '/builds/taskcluster/scriptvars.json'
 gw_config_file = "/builds/taskcluster/generic-worker.yml"
+hostname = socket.gethostname()
 
 cmd_str = "generic-worker run --config %s" % gw_config_file
 cmd_arr = cmd_str.split(" ")
 # testing mode
 # cmd_arr = sys.argv[1:]
-
-hostname = socket.gethostname()
-
-def log_to_pt(message):
-    # TODO: prefix log messages with host?
-    logging.info("%s: %s" % (hostname, message))
 
 # setup stackdriver
 stackdriver_client = google.cloud.logging.Client()
@@ -36,6 +36,8 @@ scriptvars_json = None
 if os.path.exists(scriptvars_json_file):
     with open(scriptvars_json_file) as json_file:
         scriptvars_json = json.load(json_file)
+else:
+    print("INFO: '%s' does not exist." % scriptvars_json_file)
 
 print("%s: command to run is: '%s'" % (script_name, " ".join(cmd_arr)))
 
