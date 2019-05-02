@@ -14,7 +14,6 @@ import google.cloud.logging
 # - log to papertrail
 
 def log_to_pt(message):
-    # TODO: prefix log messages with host?
     logging.info("%s: %s" % (hostname, message))
 
 script_name = sys.argv[0]
