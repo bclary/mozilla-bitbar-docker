@@ -33,9 +33,6 @@ generic-worker new-ed25519-keypair --file $ED25519_PRIVKEY
 generic-worker new-openpgp-keypair --file $OPENPGP_PRIVKEY
 envsubst < $CONF_PATH/generic-worker.yml.template > $CONF_PATH/generic-worker.yml
 
-# write out key for stackdriver
-echo "$GOOGLE_CREDENTIAL" > /etc/google/auth/application_default_credentials.json
-
 mkdir -p /builds/worker/.android/
 # bitbar mounts this file into root's homedir, but with g-w adb
 # is looking for it worker's homedir
