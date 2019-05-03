@@ -10,11 +10,7 @@ if [ ! -e "$sd_cred_file" ]; then
     echo "at service_account_keys/bitbar-docker-log-writer@bitbar-devicepool.iam.gserviceaccount.com.json.gpg"
     exit 1
 fi
-creds=`cat $sd_cred_file`
-
-# find and replace in entrypoint.sh to define var
-# - should work on gnu and bsd sed
-sed -i.bak "s/export GOOGLE_APPLICATION_CREDENTIALS='not_a_key'/export GOOGLE_APPLICATION_CREDENTIALS='$creds'/g" scripts/entrypoint.sh
+# TODO: dockerfile adds this to image
 
 workdir=$(dirname $0)
 pushd $workdir
@@ -29,6 +25,3 @@ zip -r build/mozilla-docker-$datelabel.zip . -x@zipexclude.lst
 zip -r build/mozilla-docker-$datelabel-public.zip . -x@zipexclude.lst
 
 popd
-
-# undo edit of entrypoint.sh
-mv scripts/entrypoint.sh.bak scripts/entrypoint.sh
