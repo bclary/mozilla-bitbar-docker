@@ -87,6 +87,7 @@ COPY licenses /builds/worker/android-sdk-linux/licenses
 # Add entrypoint script
 COPY scripts/entrypoint.py /usr/local/bin/entrypoint.py
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY scripts/run_gw.py /usr/local/bin/run_gw.py
 COPY scripts/tooltool.py /usr/local/bin/tooltool.py
 
 # touch /root/.android/repositories.cfg to suppress warnings that is
