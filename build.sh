@@ -6,6 +6,8 @@ sd_cred_file="stackdriver_credentials.json"
 # explode if google secrets file isn't present
 if [ ! -e "$sd_cred_file" ]; then
     echo "Please create the '$sd_cred_file' file."
+    echo "The secret lives in ssh://gitolite3@git-internal.mozilla.org/relops/gpg.git"
+    echo "at service_account_keys/bitbar-docker-log-writer@bitbar-devicepool.iam.gserviceaccount.com.json.gpg"
     exit 1
 fi
 creds=`cat $sd_cred_file`
