@@ -76,6 +76,8 @@ ADD https://github.com/taskcluster/livelog/releases/download/v1.1.0/livelog-linu
 ADD https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip /builds/worker/Downloads
 #COPY downloads/sdk-tools-linux-4333796.zip /builds/worker/Downloads
 
+COPY stackdriver_credentials.json /etc/google/stackdriver_credentials.json
+
 COPY .bashrc /root/.bashrc
 COPY .bashrc /builds/worker/.bashrc
 COPY version /builds/worker/version

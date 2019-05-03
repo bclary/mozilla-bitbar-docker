@@ -10,7 +10,7 @@ if [ ! -e "$sd_cred_file" ]; then
     echo "at service_account_keys/bitbar-docker-log-writer@bitbar-devicepool.iam.gserviceaccount.com.json.gpg"
     exit 1
 fi
-# TODO: dockerfile adds this to image
+# the dockerfile adds the above file to the image
 
 workdir=$(dirname $0)
 pushd $workdir
