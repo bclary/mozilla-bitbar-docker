@@ -4,4 +4,3 @@ licenses/
 build/
 downloads/
 *.pyc
-stackdriver_credentials.json
