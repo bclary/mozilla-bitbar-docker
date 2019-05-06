@@ -31,7 +31,7 @@ scriptvars_json_file = '/builds/taskcluster/scriptvars.json'
 gw_config_file = "/builds/taskcluster/generic-worker.yml"
 hostname = socket.gethostname()
 
-cmd_str = "generic-worker run --config %s" % gw_config_file
+cmd_str = "sudo -u worker generic-worker run --config %s" % gw_config_file
 cmd_arr = cmd_str.split(" ")
 # testing mode
 # cmd_arr = sys.argv[1:]
@@ -48,7 +48,7 @@ print("%s: command to run is: '%s'" % (script_name, " ".join(cmd_arr)))
 
 # run command
 rc = None
-proc = subprocess.Popen(cmd_arr,
+proc = subprocess.Popen(cmd_str,
                         env=scriptvars_json,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.STDOUT,
@@ -58,4 +58,5 @@ while rc == None:
     sys.stdout.write(line)
     log_to_pt(line)
     rc = proc.poll()
+sys.stdout.flush()
 sys.exit(rc)

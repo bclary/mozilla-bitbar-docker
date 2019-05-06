@@ -113,11 +113,13 @@ RUN cd /tmp && \
     /builds/worker/android-sdk-linux/tools/bin/sdkmanager platform-tools "build-tools;28.0.3" && \
     pip install mozdevice==2.0.1 && \
     pip install google-cloud-logging && \
-    chown -R root:root /builds/worker/.cache && \
+    chown -R root:worker /builds/worker && \
+    chmod -R 775 /builds/worker && \
     rm -rf /tmp/* && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /builds/worker/Downloads/* && \
-    chown -R root:root /builds
+    chown -R root:worker /builds && \
+    chmod 775 /builds
 
 ENTRYPOINT ["entrypoint.sh"]
 USER worker
