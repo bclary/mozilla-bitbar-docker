@@ -5,7 +5,6 @@
     "ed25519SigningKeyLocation":  "${ED25519_PRIVKEY}",
     "livelogExecutable":          "/usr/local/bin/livelog",
     "livelogSecret":              "${LIVELOG_SECRET}",
-    "openpgpSigningKeyLocation":  "${OPENPGP_PRIVKEY}",
     "provisionerId":              "proj-autophone",
     "publicIP":                   "127.0.0.1",
     "rootURL":                    "https://taskcluster.net",
