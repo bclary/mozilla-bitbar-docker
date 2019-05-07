@@ -55,8 +55,7 @@ proc = subprocess.Popen(cmd_str,
                         shell=True)
 while rc == None:
     line = proc.stdout.readline()
-    sys.stdout.write(line)
-    log_to_pt(line)
+    log_to_pt(line.strip())
     rc = proc.poll()
 sys.stdout.flush()
 sys.exit(rc)
