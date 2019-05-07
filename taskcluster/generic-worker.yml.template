@@ -4,6 +4,7 @@
     "clientId":                   "${TASKCLUSTER_CLIENT_ID}",
     "ed25519SigningKeyLocation":  "${ED25519_PRIVKEY}",
     "idleTimeoutSecs":            90,
+    "livelogExecutable":          "/usr/local/bin/livelog",
     "numberOfTasksToRun":         1,
     "provisionerId":              "proj-autophone",
     "publicIP":                   "127.0.0.1",
