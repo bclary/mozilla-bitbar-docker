@@ -70,9 +70,6 @@ ADD https://dl.google.com/android/android-sdk_r24.3.4-linux.tgz /builds/worker/D
 ADD https://github.com/taskcluster/generic-worker/releases/download/v14.1.0/generic-worker-nativeEngine-linux-amd64 /usr/local/bin/generic-worker
 #COPY downloads/generic-worker-nativeEngine-linux-amd64 /usr/local/bin/generic-worker
 
-ADD https://github.com/taskcluster/livelog/releases/download/v1.1.0/livelog-linux-amd64 /usr/local/bin/livelog
-#COPY downloads/livelog-linux-amd64 /usr/local/bin/livelog
-
 ADD https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip /builds/worker/Downloads
 #COPY downloads/sdk-tools-linux-4333796.zip /builds/worker/Downloads
 
