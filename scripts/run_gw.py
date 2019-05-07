@@ -31,7 +31,7 @@ scriptvars_json_file = '/builds/taskcluster/scriptvars.json'
 gw_config_file = "/builds/taskcluster/generic-worker.yml"
 hostname = socket.gethostname()
 
-cmd_str = "sudo -u worker generic-worker run --config %s" % gw_config_file
+cmd_str = "generic-worker run --config %s" % gw_config_file
 cmd_arr = cmd_str.split(" ")
 # testing mode
 # cmd_arr = sys.argv[1:]
