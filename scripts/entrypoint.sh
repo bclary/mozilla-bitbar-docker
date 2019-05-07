@@ -36,7 +36,6 @@ chown worker $ED25519_PRIVKEY
 mkdir -p /builds/worker/.android/
 # bitbar mounts this file into root's homedir, but with g-w adb
 # is looking for it worker's homedir
-chmod 755 /root/.android/adbkey
 ln -sf /root/.android/adbkey /builds/worker/.android/adbkey || true
 
 run_gw.py
