@@ -17,8 +17,6 @@ fi
 
 CONF_PATH='/builds/taskcluster'
 export ED25519_PRIVKEY="$CONF_PATH/ed25519_private_key"
-# we're not using livelog yet, set key to something so g-w will start
-export LIVELOG_SECRET='not_a_key'
 export GOOGLE_APPLICATION_CREDENTIALS="/etc/google/stackdriver_credentials.json"
 # generic-worker docker hack.
 # see https://github.com/taskcluster/generic-worker/issues/151

@@ -3,15 +3,15 @@
     "certificate":                "",
     "clientId":                   "${TASKCLUSTER_CLIENT_ID}",
     "ed25519SigningKeyLocation":  "${ED25519_PRIVKEY}",
-    "livelogExecutable":          "/usr/local/bin/livelog",
-    "livelogSecret":              "${LIVELOG_SECRET}",
+    "idleTimeoutSecs":            90,
+    "numberOfTasksToRun":         1,
     "provisionerId":              "proj-autophone",
     "publicIP":                   "127.0.0.1",
+    "requiredDiskSpaceMegabytes": 7000,
     "rootURL":                    "https://taskcluster.net",
     "workerGroup":                "${TC_WORKER_GROUP}",
     "workerId":                   "${DEVICE_NAME}",
     "workerType":                 "${TC_WORKER_TYPE}",
-    "numberOfTasksToRun":         1,
-    "idleTimeoutSecs":            90,
-    "requiredDiskSpaceMegabytes": 7000
+    "wstAudience":                "taskcluster-net",
+    "wstServerURL":               "https://websocktunnel.tasks.build"
 }
