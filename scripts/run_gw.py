@@ -48,11 +48,11 @@ print("%s: command to run is: '%s'" % (script_name, " ".join(cmd_arr)))
 
 # run command
 rc = None
-proc = subprocess.Popen(cmd_str,
+proc = subprocess.Popen(cmd_arr,
                         env=scriptvars_json,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.STDOUT,
-                        shell=True)
+                        )
 while rc == None:
     line = proc.stdout.readline()
     log_to_pt(line.rstrip())
