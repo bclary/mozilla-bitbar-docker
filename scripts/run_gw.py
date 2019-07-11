@@ -25,8 +25,10 @@ except exceptions.NameError, exceptions.ImportError:
 # - print to stdout & stderr
 # - log to papertrail
 
-def log_to_pt(message):
+def log_to_pt(message, print_to_screen=False):
     logging.info("%s: %s" % (hostname, message))
+    if print_to_screen:
+        print(message)
 
 scriptvars_json_file = '/builds/taskcluster/scriptvars.json'
 gw_config_file = "/builds/taskcluster/generic-worker.yml"
@@ -70,6 +72,6 @@ while True:
     # otherwise consume another task.
     if rc != 0 or not superseded:
         break
-    print("%s/INFO: task was superseded, running again..." % script_name)
+    log_to_pt("%s/INFO: task was superseded, running again..." % script_name, print_to_screen=True)
 
 sys.exit(rc)
