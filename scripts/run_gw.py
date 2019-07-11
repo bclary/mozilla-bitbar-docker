@@ -46,16 +46,29 @@ else:
 
 print("%s: command to run is: '%s'" % (script_name, " ".join(cmd_arr)))
 
-# run command
-rc = None
-proc = subprocess.Popen(cmd_arr,
-                        env=scriptvars_json,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.STDOUT,
-                        )
-while rc == None:
-    line = proc.stdout.readline()
-    log_to_pt(line.rstrip())
-    rc = proc.poll()
-sys.stdout.flush()
-sys.exit(rc)
+# continue until we run a non-superseded task
+while True:
+    supersede_seen = False
+    rc = None
+
+    # run command
+    proc = subprocess.Popen(cmd_arr,
+                            env=scriptvars_json,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT,
+                            )
+
+    while rc == None:
+        line = proc.stdout.readline()
+        stripped_line = line.rstrip()
+        log_to_pt(stripped_line)
+        if 'has been superseded' in stripped_line.lower():
+            supersede_seen = True
+        rc = proc.poll()
+    sys.stdout.flush()
+    # exit if the rc is non-zero (even if superseded)
+    if rc != 0:
+        sys.exit(rc)
+    # if we've processed a real job, exit out of while True
+    if not supersede_seen:
+        sys.exit(rc)
