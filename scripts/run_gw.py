@@ -47,7 +47,7 @@ else:
 
 # continue until we run a non-superseded task
 while True:
-    supersede_seen = False
+    superseded = False
     rc = None
 
     print("%s/INFO: command to run is: '%s'" % (script_name, " ".join(cmd_arr)))
@@ -63,14 +63,13 @@ while True:
         stripped_line = line.rstrip()
         log_to_pt(stripped_line)
         if 'has been superseded' in stripped_line.lower():
-            supersede_seen = True
+            superseded = True
         rc = proc.poll()
     sys.stdout.flush()
-    # exit if the rc is non-zero (even if superseded)
-    if rc != 0:
-        sys.exit(rc)
-    # if we've processed a real job, exit out of while True
-    if not supersede_seen:
-        sys.exit(rc)
-    else:
-        print("%s/INFO: task was superseded, running again..." % script_name)
+    # exit if the rc is non-zero (even if superseded) or if we've processed a real job
+    # otherwise consume another task.
+    if rc != 0 or not superseded:
+        break
+    print("%s/INFO: task was superseded, running again..." % script_name)
+
+sys.exit(rc)
