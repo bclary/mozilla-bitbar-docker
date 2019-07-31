@@ -27,6 +27,7 @@ def dump_scriptvars():
         "DEVICE_IP",
         "DEVICE_NAME",
         "DEVICE_SERIAL",
+        "DOCKER_IMAGE_VERSION",
         "HOME",
         "HOST_IP",
         "HOSTNAME",
