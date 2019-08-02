@@ -74,6 +74,7 @@ def main():
     env['DEVICE_SERIAL'] = scriptvarsenv['DEVICE_SERIAL']
     env['HOST_IP'] = scriptvarsenv['HOST_IP']
     env['DEVICE_IP'] = scriptvarsenv['DEVICE_IP']
+    env['DOCKER_IMAGE_VERSION'] = scriptvarsenv['DOCKER_IMAGE_VERSION']
 
     if 'HOME' not in env:
         env['HOME'] = '/builds/worker'
