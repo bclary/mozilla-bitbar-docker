@@ -32,6 +32,21 @@ def fatal(message):
     print('TEST-UNEXPECTED-FAIL | bitbar | {}'.format(message))
     sys.exit(TBPL_RETRY_EXIT_STATUS)
 
+def run_cmd(command, print_command=False, print_output=False):
+    if print_command:
+        print("command is '%s': " % command)
+    rc = None
+    proc = subprocess.Popen(command,
+                            shell=True,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT)
+    while rc == None:
+        if print_output:
+            line = proc.stdout.readline()
+            sys.stdout.write(line)
+        rc = proc.poll()
+    return rc
+
 def main():
     parser = argparse.ArgumentParser(
         usage='%(prog)s [options] <test command> (<test command option> ...)',
@@ -151,6 +166,14 @@ def main():
             stderr=subprocess.STDOUT))
     except subprocess.CalledProcessError as e:
         print('{} attempting netstat'.format(e))
+
+    # enable charging on device
+    #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
+    # TODO: detect the device type
+    p2_cmd = "adb shell su -c 'echo 0 > /sys/class/power_supply/battery/input_suspend'"
+    run_cmd(p2_cmd)
+    g5_cmd = "adb shell su -c 'echo 1 > /sys/class/power_supply/battery/charging_enabled'"
+    run_cmd(g5_cmd)
 
     print('script.py exitcode {}'.format(rc))
     if rc == 0:
