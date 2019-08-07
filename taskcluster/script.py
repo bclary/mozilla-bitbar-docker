@@ -32,20 +32,8 @@ def fatal(message):
     print('TEST-UNEXPECTED-FAIL | bitbar | {}'.format(message))
     sys.exit(TBPL_RETRY_EXIT_STATUS)
 
-def run_cmd(command, print_command=False, print_output=False):
-    if print_command:
-        print("command is '%s': " % command)
-    rc = None
-    proc = subprocess.Popen(command,
-                            shell=True,
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT)
-    while rc == None:
-        if print_output:
-            line = proc.stdout.readline()
-            sys.stdout.write(line)
-        rc = proc.poll()
-    return rc
+def run_cmd(command):
+    return subprocess.call(command, shell=True)
 
 def main():
     parser = argparse.ArgumentParser(
