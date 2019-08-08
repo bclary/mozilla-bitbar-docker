@@ -209,7 +209,7 @@ def main():
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
-    rc = enable_charging(device)
+    rc = enable_charging(device) + rc
 
     print('script.py exitcode {}'.format(rc))
     if rc == 0:
