@@ -155,8 +155,10 @@ def main():
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
     charging_disabled = False
-    p2_batt_input_suspended = bool(int(device.shell_output("cat /sys/class/power_supply/battery/input_suspend")))
-    g5_charging_enabled = bool(int(device.shell_output("cat /sys/class/power_supply/battery/charging_enabled")))
+    p2_path = "/sys/class/power_supply/battery/input_suspend"
+    g5_path = "/sys/class/power_supply/battery/charging_enabled"
+    p2_batt_input_suspended = bool(int(device.shell_output("cat %s" % p2_path)))
+    g5_charging_enabled = bool(int(device.shell_output("cat %s" % g5_path)))
     if p2_batt_input_suspended or not g5_charging_enabled:
         charging_disabled = True
     if charging_disabled:
@@ -166,14 +168,14 @@ def main():
             print("Enabling charging...")
             if device_name == "Pixel 2":
                 device.shell_bool(
-                    "echo %s > %s" % (0, "/sys/class/power_supply/battery/input_suspend"),
+                    "echo %s > %s" % (0, p2_path),
                     root=True,
                     timeout=timeout,
                 )
             elif device_name == "Moto G (5)":
                 device.shell_bool(
                     "echo %s > %s"
-                    % (1, "/sys/class/power_supply/battery/charging_enabled"),
+                    % (1, g5_path),
                     root=True,
                     timeout=timeout,
                 )
