@@ -186,7 +186,7 @@ def main():
                 )
         except (ADBTimeoutError, ADBError) as e:
             print('TEST-UNEXPECTED-FAIL | bitbar | Failed to enable charging. Contact Android Relops immediately.')
-            print('{}: {}'.format(e.__class__.__name__, e)
+            print('{}: {}'.format(e.__class__.__name__, e))
             rc = 1
 
     print("script.py exitcode {}".format(rc))
