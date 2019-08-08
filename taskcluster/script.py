@@ -154,14 +154,34 @@ def main():
 
     # enable charging on device
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
-    device_name = device.shell_output('getprop ro.product.model', timeout=10)
-    print("Enabling charging...")
-    if device_name == "Pixel 2":
-        device.shell_bool("echo %s > %s" % (0, "/sys/class/power_supply/battery/input_suspend"), root=True)
-    elif device_name == "Moto G (5)":
-        device.shell_bool("echo %s > %s" % (1, "/sys/class/power_supply/battery/charging_enabled"), root=True)
-    else:
-        print("WARNING: Unknown device! Not sure how to enable charging for device of type '%s'." % device_name)
+    try:
+        timeout = 10
+        device_name = device.shell_output("getprop ro.product.model", timeout=timeout)
+        print("Enabling charging...")
+        if device_name == "Pixel 2":
+            device.shell_bool(
+                "echo %s > %s" % (0, "/sys/class/power_supply/battery/input_suspend"),
+                root=True,
+                timeout=timeout,
+            )
+        elif device_name == "Moto G (5)":
+            device.shell_bool(
+                "echo %s > %s"
+                % (1, "/sys/class/power_supply/battery/charging_enabled"),
+                root=True,
+                timeout=timeout,
+            )
+        else:
+            print(
+                "WARNING: Unknown device! Not sure how to enable charging for device of type '%s'."
+                % device_name
+            )
+    except ADBTimeoutError as e:
+        print("ERROR: Enabling charging failed with ADBTimeoutError.")
+        print(e)
+    except ADBError as e:
+        print("ERROR: Enabling charging failed with ADBError.")
+        print(e)
 
     print('script.py exitcode {}'.format(rc))
     if rc == 0:
