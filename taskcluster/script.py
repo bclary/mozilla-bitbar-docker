@@ -11,7 +11,6 @@ import os
 import subprocess
 import sys
 
-from distutils.dir_util import copy_tree
 from glob import glob
 
 from mozdevice import ADBAndroid, ADBHost, ADBError, ADBTimeoutError
@@ -35,7 +34,6 @@ def fatal(message):
 def enable_charging(device):
     rc = 0
     timeout = 10
-    charging_disabled = False
     p2_path = "/sys/class/power_supply/battery/input_suspend"
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
 
