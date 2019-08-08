@@ -60,7 +60,7 @@ def enable_charging(device):
                 ).strip()
                 == "1"
             )
-            if g5_charging_enabled:
+            if not g5_charging_enabled:
                 print("Enabling charging...")
                 device.shell_bool(
                     "echo %s > %s" % (1, g5_path), root=True, timeout=timeout
