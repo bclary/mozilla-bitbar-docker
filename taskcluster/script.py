@@ -32,9 +32,6 @@ def fatal(message):
     print('TEST-UNEXPECTED-FAIL | bitbar | {}'.format(message))
     sys.exit(TBPL_RETRY_EXIT_STATUS)
 
-def run_cmd(command):
-    return subprocess.call(command, shell=True)
-
 def main():
     parser = argparse.ArgumentParser(
         usage='%(prog)s [options] <test command> (<test command option> ...)',
@@ -157,11 +154,14 @@ def main():
 
     # enable charging on device
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
-    # TODO: detect the device type
-    p2_cmd = "adb shell su -c 'echo 0 > /sys/class/power_supply/battery/input_suspend'"
-    run_cmd(p2_cmd)
-    g5_cmd = "adb shell su -c 'echo 1 > /sys/class/power_supply/battery/charging_enabled'"
-    run_cmd(g5_cmd)
+    device_name = device.shell_output('getprop ro.product.model', timeout=10)
+    print("Enabling charging...")
+    if device_name == "Pixel 2":
+        device.shell_bool("echo %s > %s" % (0, "/sys/class/power_supply/battery/input_suspend"), root=True)
+    elif device_name == "Moto G (5)":
+        device.shell_bool("echo %s > %s" % (1, "/sys/class/power_supply/battery/charging_enabled"), root=True)
+    else:
+        print("WARNING: Unknown device! Not sure how to enable charging for device of type '%s'." % device_name)
 
     print('script.py exitcode {}'.format(rc))
     if rc == 0:
