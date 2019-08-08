@@ -188,7 +188,7 @@ def main():
             print("{}: {}".format(e.__class__.__name__, e))
             rc = 1
 
-    print("script.py exitcode {}".format(rc))
+    print('script.py exitcode {}'.format(rc))
     if rc == 0:
         return 0
     return 1
