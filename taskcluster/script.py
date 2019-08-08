@@ -40,12 +40,13 @@ def enable_charging(device):
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
 
     try:
-        device_name = device.shell_output(
-            "getprop ro.product.model", timeout=timeout
-        )
+        device_name = device.shell_output("getprop ro.product.model", timeout=timeout)
         if device_name == "Pixel 2":
             p2_batt_input_suspended = (
-                device.shell_output("cat %s 2>/dev/null" % p2_path, timeout=timeout).strip() == "1"
+                device.shell_output(
+                    "cat %s 2>/dev/null" % p2_path, timeout=timeout
+                ).strip()
+                == "1"
             )
             if p2_batt_input_suspended:
                 print("Enabling charging...")
@@ -54,7 +55,9 @@ def enable_charging(device):
                 )
         elif device_name == "Moto G (5)":
             g5_charging_enabled = (
-                device.shell_output("cat %s 2>/dev/null" % g5_path, timeout=timeout).strip()
+                device.shell_output(
+                    "cat %s 2>/dev/null" % g5_path, timeout=timeout
+                ).strip()
                 == "1"
             )
             if g5_charging_enabled:
@@ -63,10 +66,7 @@ def enable_charging(device):
                     "echo %s > %s" % (1, g5_path), root=True, timeout=timeout
                 )
         else:
-            print(
-                "WARNING: Unknown device!"
-                % device_name
-            )
+            print("WARNING: Unknown device!" % device_name)
     except (ADBTimeoutError, ADBError) as e:
         print(
             "TEST-UNEXPECTED-FAIL | bitbar | Failed to enable charging. Contact Android Relops immediately."
