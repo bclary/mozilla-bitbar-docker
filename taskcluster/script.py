@@ -42,11 +42,17 @@ def enable_charging(device):
     # explicitly check for 1 vs using bool
     # - ValueError is thrown if no output (invalid path)
     try:
-        p2_batt_input_suspended = int(device.shell_output("cat %s 2>/dev/null" % p2_path, timeout=timeout)) == 1
+        p2_batt_input_suspended = (
+            int(device.shell_output("cat %s 2>/dev/null" % p2_path, timeout=timeout))
+            == 1
+        )
     except (ValueError, ADBTimeoutError, ADBError):
         p2_batt_input_suspended = False
     try:
-        g5_charging_enabled = int(device.shell_output("cat %s 2>/dev/null" % g5_path, timeout=timeout)) == 1
+        g5_charging_enabled = (
+            int(device.shell_output("cat %s 2>/dev/null" % g5_path, timeout=timeout))
+            == 1
+        )
     except (ValueError, ADBTimeoutError, ADBError):
         g5_charging_enabled = False
 
