@@ -164,20 +164,17 @@ def main():
     if charging_disabled:
         try:
             timeout = 10
-            device_name = device.shell_output("getprop ro.product.model", timeout=timeout)
+            device_name = device.shell_output(
+                "getprop ro.product.model", timeout=timeout
+            )
             print("Enabling charging...")
             if device_name == "Pixel 2":
                 device.shell_bool(
-                    "echo %s > %s" % (0, p2_path),
-                    root=True,
-                    timeout=timeout,
+                    "echo %s > %s" % (0, p2_path), root=True, timeout=timeout
                 )
             elif device_name == "Moto G (5)":
                 device.shell_bool(
-                    "echo %s > %s"
-                    % (1, g5_path),
-                    root=True,
-                    timeout=timeout,
+                    "echo %s > %s" % (1, g5_path), root=True, timeout=timeout
                 )
             else:
                 print(
@@ -185,8 +182,10 @@ def main():
                     % device_name
                 )
         except (ADBTimeoutError, ADBError) as e:
-            print('TEST-UNEXPECTED-FAIL | bitbar | Failed to enable charging. Contact Android Relops immediately.')
-            print('{}: {}'.format(e.__class__.__name__, e))
+            print(
+                "TEST-UNEXPECTED-FAIL | bitbar | Failed to enable charging. Contact Android Relops immediately."
+            )
+            print("{}: {}".format(e.__class__.__name__, e))
             rc = 1
 
     print("script.py exitcode {}".format(rc))
