@@ -64,7 +64,10 @@ def enable_charging(device):
                     "echo %s > %s" % (1, g5_path), root=True, timeout=timeout
                 )
         else:
-            print("WARNING: Unknown device!" % device_name)
+            print(
+                "TEST-UNEXPECTED-FAIL | bitbar | Unknown device! Contact Android Relops immediately."
+            )
+            rc = 1
     except (ADBTimeoutError, ADBError) as e:
         print(
             "TEST-UNEXPECTED-FAIL | bitbar | Failed to enable charging. Contact Android Relops immediately."
