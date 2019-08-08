@@ -14,7 +14,7 @@ import sys
 from distutils.dir_util import copy_tree
 from glob import glob
 
-from mozdevice import ADBAndroid, ADBHost, ADBError
+from mozdevice import ADBAndroid, ADBHost, ADBError, ADBTimeoutError
 
 
 MAX_NETWORK_ATTEMPTS = 3
