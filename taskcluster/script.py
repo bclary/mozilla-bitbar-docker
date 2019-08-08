@@ -152,38 +152,42 @@ def main():
     except subprocess.CalledProcessError as e:
         print('{} attempting netstat'.format(e))
 
-    # enable charging on device
+    # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
-    try:
-        timeout = 10
-        device_name = device.shell_output("getprop ro.product.model", timeout=timeout)
-        print("Enabling charging...")
-        if device_name == "Pixel 2":
-            device.shell_bool(
-                "echo %s > %s" % (0, "/sys/class/power_supply/battery/input_suspend"),
-                root=True,
-                timeout=timeout,
-            )
-        elif device_name == "Moto G (5)":
-            device.shell_bool(
-                "echo %s > %s"
-                % (1, "/sys/class/power_supply/battery/charging_enabled"),
-                root=True,
-                timeout=timeout,
-            )
-        else:
-            print(
-                "WARNING: Unknown device! Not sure how to enable charging for device of type '%s'."
-                % device_name
-            )
-    except ADBTimeoutError as e:
-        print("ERROR: Enabling charging failed with ADBTimeoutError.")
-        print(e)
-    except ADBError as e:
-        print("ERROR: Enabling charging failed with ADBError.")
-        print(e)
+    charging_disabled = False
+    p2_res = int(device.shell_output("cat /sys/class/power_supply/battery/input_suspend"))
+    g5_res = int(device.shell_output("cat /sys/class/power_supply/battery/charging_enabled"))
+    if p2_res == 1 or g5_res == 0:
+        charging_disabled = True
+    if charging_disabled:
+        try:
+            timeout = 10
+            device_name = device.shell_output("getprop ro.product.model", timeout=timeout)
+            print("Enabling charging...")
+            if device_name == "Pixel 2":
+                device.shell_bool(
+                    "echo %s > %s" % (0, "/sys/class/power_supply/battery/input_suspend"),
+                    root=True,
+                    timeout=timeout,
+                )
+            elif device_name == "Moto G (5)":
+                device.shell_bool(
+                    "echo %s > %s"
+                    % (1, "/sys/class/power_supply/battery/charging_enabled"),
+                    root=True,
+                    timeout=timeout,
+                )
+            else:
+                print(
+                    "WARNING: Unknown device! Not sure how to enable charging for device of type '%s'."
+                    % device_name
+                )
+        except (ADBTimeoutError, ADBError) as e:
+            print('TEST-UNEXPECTED-FAIL | bitbar | Failed to enable charging. Contact Android Relops immediately.')
+            print('{}: {}'.format(e.__class__.__name__, e)
+            rc = 1
 
-    print('script.py exitcode {}'.format(rc))
+    print("script.py exitcode {}".format(rc))
     if rc == 0:
         return 0
     return 1
