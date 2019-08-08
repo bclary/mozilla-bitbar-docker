@@ -155,9 +155,10 @@ def main():
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
     charging_disabled = False
-    p2_res = int(device.shell_output("cat /sys/class/power_supply/battery/input_suspend"))
-    g5_res = int(device.shell_output("cat /sys/class/power_supply/battery/charging_enabled"))
-    if p2_res == 1 or g5_res == 0:
+    # casting to int first strips string and ensures "  0  " is False
+    p2_batt_input_suspended = bool(int(device.shell_output("cat /sys/class/power_supply/battery/input_suspend")))
+    g5_charging_enabled = bool(int(device.shell_output("cat /sys/class/power_supply/battery/charging_enabled")))
+    if p2_batt_input_suspended or not g5_charging_enabled:
         charging_disabled = True
     if charging_disabled:
         try:
