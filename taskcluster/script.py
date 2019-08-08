@@ -39,51 +39,40 @@ def enable_charging(device):
     p2_path = "/sys/class/power_supply/battery/input_suspend"
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
 
-    # explicitly check for 1 vs using bool
-    # - ValueError is thrown if no output (invalid path)
     try:
-        p2_batt_input_suspended = (
-            int(device.shell_output("cat %s 2>/dev/null" % p2_path, timeout=timeout))
-            == 1
+        device_name = device.shell_output(
+            "getprop ro.product.model", timeout=timeout
         )
-    except (ValueError, ADBTimeoutError, ADBError):
-        p2_batt_input_suspended = False
-    try:
-        g5_charging_enabled = (
-            int(device.shell_output("cat %s 2>/dev/null" % g5_path, timeout=timeout))
-            == 1
-        )
-    except (ValueError, ADBTimeoutError, ADBError):
-        g5_charging_enabled = False
-
-    if p2_batt_input_suspended or not g5_charging_enabled:
-        charging_disabled = True
-
-    if charging_disabled:
-        try:
-            device_name = device.shell_output(
-                "getprop ro.product.model", timeout=timeout
+        if device_name == "Pixel 2":
+            p2_batt_input_suspended = (
+                device.shell_output("cat %s 2>/dev/null" % p2_path, timeout=timeout).strip() == "1"
             )
-            print("Enabling charging...")
-            if device_name == "Pixel 2":
+            if p2_batt_input_suspended:
+                print("Enabling charging...")
                 device.shell_bool(
                     "echo %s > %s" % (0, p2_path), root=True, timeout=timeout
                 )
-            elif device_name == "Moto G (5)":
+        elif device_name == "Moto G (5)":
+            g5_charging_enabled = (
+                device.shell_output("cat %s 2>/dev/null" % g5_path, timeout=timeout).strip()
+                == "1"
+            )
+            if g5_charging_enabled:
+                print("Enabling charging...")
                 device.shell_bool(
                     "echo %s > %s" % (1, g5_path), root=True, timeout=timeout
                 )
-            else:
-                print(
-                    "WARNING: Unknown device! Not sure how to enable charging for device of type '%s'."
-                    % device_name
-                )
-        except (ADBTimeoutError, ADBError) as e:
+        else:
             print(
-                "TEST-UNEXPECTED-FAIL | bitbar | Failed to enable charging. Contact Android Relops immediately."
+                "WARNING: Unknown device!"
+                % device_name
             )
-            print("{}: {}".format(e.__class__.__name__, e))
-            rc = 1
+    except (ADBTimeoutError, ADBError) as e:
+        print(
+            "TEST-UNEXPECTED-FAIL | bitbar | Failed to enable charging. Contact Android Relops immediately."
+        )
+        print("{}: {}".format(e.__class__.__name__, e))
+        rc = 1
 
     return rc
 
