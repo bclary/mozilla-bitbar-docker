@@ -52,13 +52,13 @@ def enable_charging(device):
                     "echo %s > %s" % (0, p2_path), root=True, timeout=timeout
                 )
         elif device_name == "Moto G (5)":
-            g5_charging_enabled = (
+            g5_charging_disabled = (
                 device.shell_output(
                     "cat %s 2>/dev/null" % g5_path, timeout=timeout
                 ).strip()
-                == "1"
+                == "0"
             )
-            if not g5_charging_enabled:
+            if g5_charging_disabled:
                 print("Enabling charging...")
                 device.shell_bool(
                     "echo %s > %s" % (1, g5_path), root=True, timeout=timeout
