@@ -40,13 +40,13 @@ def enable_charging(device):
     try:
         device_name = device.shell_output("getprop ro.product.model", timeout=timeout)
         if device_name == "Pixel 2":
-            p2_batt_input_suspended = (
+            p2_charging_disabled = (
                 device.shell_output(
                     "cat %s 2>/dev/null" % p2_path, timeout=timeout
                 ).strip()
                 == "1"
             )
-            if p2_batt_input_suspended:
+            if p2_charging_disabled:
                 print("Enabling charging...")
                 device.shell_bool(
                     "echo %s > %s" % (0, p2_path), root=True, timeout=timeout
