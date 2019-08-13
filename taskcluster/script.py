@@ -173,6 +173,8 @@ def main():
     print('Connecting to Android device {}'.format(env['DEVICE_SERIAL']))
     try:
         device = ADBAndroid(device=env['DEVICE_SERIAL'])
+        # this can explode if an unknown device, explode now vs in an hour...
+        device_type = get_device_type(device)
 
         # clean up the device.
         device.rm('/data/local/tests', recursive=True, force=True, root=True)
@@ -187,9 +189,6 @@ def main():
         env['DEBUG'] = taskcluster_debug
 
     print('environment = {}'.format(json.dumps(env, indent=4)))
-
-    # this can explode if an unknown device, explode now vs in an hour...
-    device_type = get_device_type(device)
 
     # run the payload's command
     print(' '.join(extra_args))
