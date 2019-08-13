@@ -3,6 +3,17 @@ FROM ubuntu:16.04
 RUN apt-get update && apt-get install -y software-properties-common python-software-properties
 RUN add-apt-repository ppa:openjdk-r/ppa
 
+# upgrading to Python 3.6
+RUN apt-get install curl
+RUN add-apt-repository ppa:jonathonf/python-3.6
+RUN apt-get update
+RUN apt-get install -y python3.6
+RUN curl https://bootstrap.pypa.io/get-pip.py | python3.6
+
+# adding a couple of packages for the conditioned profiles
+RUN pip3.6 install arsenic==19.1
+RUN pip3.6 install requests==2.22.0
+
 # libcurl3 required for minidump_stackwalk from releng tooltool
 
 RUN apt-get update && \
