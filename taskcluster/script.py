@@ -65,7 +65,8 @@ def enable_charging(device):
                 )
         else:
             print(
-                "TEST-UNEXPECTED-FAIL | bitbar | Unknown device! Contact Android Relops immediately."
+                "TEST-UNEXPECTED-FAIL | bitbar | Unknown device ('%s')! Contact Android Relops immediately."
+                % device_name
             )
             rc = 1
     except (ADBTimeoutError, ADBError) as e:
