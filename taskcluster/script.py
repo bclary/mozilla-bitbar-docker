@@ -32,35 +32,30 @@ def fatal(message):
     sys.exit(TBPL_RETRY_EXIT_STATUS)
 
 
-def get_device_name(device):
+def get_device_type(device):
     timeout = 10
-    # if this is the first adb call we'll get adb server messages in this output, discard it
-    # "* daemon not running; starting now" etc
-    # shell_output uses io and mixes stderr and stdout, so 2>/dev/null doesn't work
-    device.shell_output("ls", timeout=timeout)
-    device_name = device.shell_output("getprop ro.product.model", timeout=timeout)
-    if device_name == "Pixel 2":
+    device_type = device.shell_output("getprop ro.product.model", timeout=timeout)
+    if device_type == "Pixel 2":
         pass
-    elif device_name == "Moto G (5)":
+    elif device_type == "Moto G (5)":
         pass
     else:
         print(
             "TEST-UNEXPECTED-FAIL | bitbar | Unknown device ('%s')! Contact Android Relops immediately."
-            % device_name
+            % device_type
         )
         sys.exit(1)
-    return device_name
+    return device_type
 
 
-def enable_charging(device):
+def enable_charging(device, device_type):
     rc = 0
     timeout = 10
     p2_path = "/sys/class/power_supply/battery/input_suspend"
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
 
     try:
-        device_name = get_device_name(device)
-        if device_name == "Pixel 2":
+        if device_type == "Pixel 2":
             p2_charging_disabled = (
                 device.shell_output(
                     "cat %s 2>/dev/null" % p2_path, timeout=timeout
@@ -72,7 +67,7 @@ def enable_charging(device):
                 device.shell_bool(
                     "echo %s > %s" % (0, p2_path), root=True, timeout=timeout
                 )
-        elif device_name == "Moto G (5)":
+        elif device_type == "Moto G (5)":
             g5_charging_disabled = (
                 device.shell_output(
                     "cat %s 2>/dev/null" % g5_path, timeout=timeout
@@ -87,7 +82,7 @@ def enable_charging(device):
         else:
             print(
                 "TEST-UNEXPECTED-FAIL | bitbar | Unknown device ('%s')! Contact Android Relops immediately."
-                % device_name
+                % device_type
             )
             rc = 1
     except (ADBTimeoutError, ADBError) as e:
@@ -194,7 +189,7 @@ def main():
     print('environment = {}'.format(json.dumps(env, indent=4)))
 
     # this can explode if an unknown device, explode now vs in an hour...
-    get_device_name(device)
+    device_type = get_device_type(device)
 
     # run the payload's command
     print(' '.join(extra_args))
@@ -207,6 +202,10 @@ def main():
         line = proc.stdout.readline()
         sys.stdout.write(line)
         rc = proc.poll()
+
+    # enable charging on device if it is disabled
+    #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
+    rc = enable_charging(device, device_type) + rc
 
     try:
         if env['DEVICE_SERIAL'].endswith(':5555'):
@@ -222,10 +221,6 @@ def main():
             stderr=subprocess.STDOUT))
     except subprocess.CalledProcessError as e:
         print('{} attempting netstat'.format(e))
-
-    # enable charging on device if it is disabled
-    #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
-    rc = enable_charging(device) + rc
 
     print('script.py exitcode {}'.format(rc))
     if rc == 0:
