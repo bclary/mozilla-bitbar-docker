@@ -38,7 +38,7 @@ def enable_charging(device):
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
 
     try:
-        device_name = device.shell_output("getprop ro.product.model", timeout=timeout)
+        device_name = device.shell_output("getprop ro.product.model 2>/dev/null", timeout=timeout)
         if device_name == "Pixel 2":
             p2_charging_disabled = (
                 device.shell_output(
