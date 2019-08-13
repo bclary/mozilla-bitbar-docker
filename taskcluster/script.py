@@ -31,6 +31,27 @@ def fatal(message):
     print('TEST-UNEXPECTED-FAIL | bitbar | {}'.format(message))
     sys.exit(TBPL_RETRY_EXIT_STATUS)
 
+
+def get_device_name(device):
+    timeout = 10
+    # if this is the first adb call we'll get adb server messages in this output, discard it
+    # "* daemon not running; starting now" etc
+    # shell_output uses io and mixes stderr and stdout, so 2>/dev/null doesn't work
+    device.shell_output("ls", timeout=timeout)
+    device_name = device.shell_output("getprop ro.product.model", timeout=timeout)
+    if device_name == "Pixel 2":
+        pass
+    elif device_name == "Moto G (5)":
+        pass
+    else:
+        print(
+            "TEST-UNEXPECTED-FAIL | bitbar | Unknown device ('%s')! Contact Android Relops immediately."
+            % device_name
+        )
+        sys.exit(1)
+    return device_name
+
+
 def enable_charging(device):
     rc = 0
     timeout = 10
@@ -38,7 +59,7 @@ def enable_charging(device):
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
 
     try:
-        device_name = device.shell_output("getprop ro.product.model 2>/dev/null", timeout=timeout)
+        device_name = get_device_name(device)
         if device_name == "Pixel 2":
             p2_charging_disabled = (
                 device.shell_output(
@@ -77,6 +98,7 @@ def enable_charging(device):
         rc = 1
 
     return rc
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -170,6 +192,9 @@ def main():
         env['DEBUG'] = taskcluster_debug
 
     print('environment = {}'.format(json.dumps(env, indent=4)))
+
+    # this can explode if an unknown device, explode now vs in an hour...
+    get_device_name(device)
 
     # run the payload's command
     print(' '.join(extra_args))
