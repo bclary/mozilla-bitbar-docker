@@ -127,6 +127,9 @@ RUN cd /tmp && \
     tar xzf /builds/worker/Downloads/android-sdk_r24.3.4-linux.tgz --directory=/builds/worker || true && \
     unzip -qq -n /builds/worker/Downloads/sdk-tools-linux-4333796.zip -d /builds/worker/android-sdk-linux/ || true && \
     /builds/worker/android-sdk-linux/tools/bin/sdkmanager platform-tools "build-tools;28.0.3" && \
+    pip install pip -U && \
+    pip3 install pip -U && \
+    pip install setuptools -U && \
     pip install mozdevice==3.0.5 && \
     pip install google-cloud-logging && \
     rm -rf /tmp/* && \
