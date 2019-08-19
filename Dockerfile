@@ -10,15 +10,19 @@ RUN apt-get update && \
     curl \
     dnsutils \
     ffmpeg \
+    git \
     lib32stdc++6 \
     lib32z1 \
     libavcodec-dev \
     libavformat-dev \
     libcurl3 \
+    libffi-dev \
     libgconf-2-4 \
     libgtk-3-0 \
     libopencv-dev \
     libpython-dev \
+    libreadline-dev \
+    libssl-dev \
     libswscale-dev \
     locales \
     net-tools \
@@ -26,14 +30,13 @@ RUN apt-get update && \
     openjdk-8-jdk-headless \
     python \
     python-pip \
-    python3 \
-    python3-pip \
     sudo \
     tzdata \
     unzip \
     wget \
     xvfb \
-    zip && \
+    zip \
+    zlib1g-dev && \
     apt-get clean all -y
 
 RUN mkdir /builds && \
@@ -62,6 +65,14 @@ ENV    HOME=/builds/worker \
        LANG=en_US.UTF-8 \
        LC_ALL=en_US.UTF-8 \
        PATH=$PATH:/builds/worker/bin
+
+# install pyenv and python 3
+ENV     PYENV_ROOT=$HOME/.pyenv \
+        PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
+RUN git clone git://github.com/yyuu/pyenv.git .pyenv && \
+        pyenv install 3.7.3 && \
+        pyenv global system 3.7.3 && \
+        pyenv rehash
 
 ADD https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
 #COPY downloads/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
