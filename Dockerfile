@@ -32,6 +32,8 @@ RUN apt-get update && \
     openjdk-8-jdk-headless \
     python \
     python-pip \
+    python3 \
+    python3-pip \
     sudo \
     tzdata \
     unzip \
