@@ -11,11 +11,11 @@ RUN apt-get update && \
     dnsutils \
     ffmpeg \
     git \
-    lbzip2 \
     lib32stdc++6 \
     lib32z1 \
     libavcodec-dev \
     libavformat-dev \
+    libbz2-dev \
     libcurl3 \
     libffi-dev \
     libgconf-2-4 \
@@ -23,7 +23,7 @@ RUN apt-get update && \
     libopencv-dev \
     libpython-dev \
     libreadline-dev \
-    libsqlite3-0 \
+    libsqlite3-dev \
     libssl-dev \
     libswscale-dev \
     locales \
