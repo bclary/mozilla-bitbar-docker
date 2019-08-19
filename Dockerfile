@@ -74,7 +74,7 @@ ENV PY2_VERSION=2.7.9
 RUN git clone --branch v1.2.13 git://github.com/pyenv/pyenv.git .pyenv && \
     pyenv install ${PY3_VERSION} && \
     pyenv install ${PY2_VERSION} && \
-    pyenv global ${PY3_VERSION} ${PY2_VERSION} && \
+    pyenv global ${PY2_VERSION} ${PY3_VERSION} && \
     pyenv rehash
 
 ADD https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
