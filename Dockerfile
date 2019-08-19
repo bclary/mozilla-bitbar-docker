@@ -70,27 +70,27 @@ ENV    HOME=/builds/worker \
 ENV PYENV_ROOT=$HOME/.pyenv
 ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 ENV PY3_VERSION=3.7.4
-ENV PY2_VERSION=2.7.9
+ENV PY2_VERSION=2.7.16
 RUN git clone --branch v1.2.13 git://github.com/pyenv/pyenv.git .pyenv && \
     pyenv install ${PY3_VERSION} && \
     pyenv install ${PY2_VERSION} && \
     pyenv global ${PY2_VERSION} ${PY3_VERSION} && \
     pyenv rehash
 
-ADD https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
-#COPY downloads/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
+# ADD https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
+COPY downloads/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
 
-ADD https://dl.google.com/android/android-sdk_r24.3.4-linux.tgz /builds/worker/Downloads
-#COPY downloads/android-sdk_r24.3.4-linux.tgz /builds/worker/Downloads
+# ADD https://dl.google.com/android/android-sdk_r24.3.4-linux.tgz /builds/worker/Downloads
+COPY downloads/android-sdk_r24.3.4-linux.tgz /builds/worker/Downloads
 
-ADD https://github.com/taskcluster/generic-worker/releases/download/v14.1.0/generic-worker-nativeEngine-linux-amd64 /usr/local/bin/generic-worker
-#COPY downloads/generic-worker-nativeEngine-linux-amd64 /usr/local/bin/generic-worker
+# ADD https://github.com/taskcluster/generic-worker/releases/download/v14.1.0/generic-worker-nativeEngine-linux-amd64 /usr/local/bin/generic-worker
+COPY downloads/generic-worker-nativeEngine-linux-amd64 /usr/local/bin/generic-worker
 
-ADD https://github.com/taskcluster/livelog/releases/download/v1.1.0/livelog-linux-amd64 /usr/local/bin/livelog
-#COPY downloads/livelog-linux-amd64 /usr/local/bin/livelog
+# ADD https://github.com/taskcluster/livelog/releases/download/v1.1.0/livelog-linux-amd64 /usr/local/bin/livelog
+COPY downloads/livelog-linux-amd64 /usr/local/bin/livelog
 
-ADD https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip /builds/worker/Downloads
-#COPY downloads/sdk-tools-linux-4333796.zip /builds/worker/Downloads
+# ADD https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip /builds/worker/Downloads
+COPY downloads/sdk-tools-linux-4333796.zip /builds/worker/Downloads
 
 COPY stackdriver_credentials.json /etc/google/stackdriver_credentials.json
 
