@@ -11,6 +11,7 @@ RUN apt-get update && \
     dnsutils \
     ffmpeg \
     git \
+    lbzip2 \
     lib32stdc++6 \
     lib32z1 \
     libavcodec-dev \
@@ -22,6 +23,7 @@ RUN apt-get update && \
     libopencv-dev \
     libpython-dev \
     libreadline-dev \
+    libsqlite3-0 \
     libssl-dev \
     libswscale-dev \
     locales \
