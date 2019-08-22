@@ -10,11 +10,9 @@ import logging
 import os
 import subprocess
 import sys
-
 from glob import glob
 
-from mozdevice import ADBAndroid, ADBHost, ADBError, ADBTimeoutError
-
+from mozdevice import ADBAndroid, ADBError, ADBHost, ADBTimeoutError
 
 MAX_NETWORK_ATTEMPTS = 3
 
