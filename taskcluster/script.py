@@ -47,7 +47,6 @@ def get_device_type(device):
 
 
 def enable_charging(device, device_type):
-    rc = 0
     timeout = 10
     p2_path = "/sys/class/power_supply/battery/input_suspend"
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
