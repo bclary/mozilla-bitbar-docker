@@ -12,7 +12,7 @@ import subprocess
 import sys
 from glob import glob
 
-from mozdevice import ADBAndroid, ADBError, ADBHost, ADBTimeoutError
+from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
 
 MAX_NETWORK_ATTEMPTS = 3
 
@@ -170,7 +170,9 @@ def main():
 
     print('Connecting to Android device {}'.format(env['DEVICE_SERIAL']))
     try:
-        device = ADBAndroid(device=env['DEVICE_SERIAL'])
+        device = ADBDevice(device=env['DEVICE_SERIAL'])
+        android_version = device.get_prop('ro.build.version.release')
+        print('Android device version (ro.build.version.release):  {}'.format(android_version))
         # this can explode if an unknown device, explode now vs in an hour...
         device_type = get_device_type(device)
 
