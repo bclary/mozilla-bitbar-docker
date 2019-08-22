@@ -19,18 +19,20 @@ from mozdevice import ADBAndroid, ADBHost, ADBError, ADBTimeoutError
 MAX_NETWORK_ATTEMPTS = 3
 
 
-def fatal(message):
+def fatal(message, exception=None, retry=True):
     """Emit an error message and exit the process with status
     TBPL_RETRY_EXIT_STATUS this will cause the job to be retried.
 
     """
-    # Exit Code 1 until we move to generic-worker since
-    # taskcluster-worker reserves 4 for internal worker errors.
-    #TBPL_RETRY_EXIT_STATUS = 4
-    TBPL_RETRY_EXIT_STATUS = 1
+    TBPL_RETRY_EXIT_STATUS = 4
+    if retry:
+        exit_code = TBPL_RETRY_EXIT_STATUS
+    else:
+        exit_code = 1
     print('TEST-UNEXPECTED-FAIL | bitbar | {}'.format(message))
-    sys.exit(TBPL_RETRY_EXIT_STATUS)
-
+    if exception:
+        print("{}: {}".format(exception.__class__.__name__, exception))
+    sys.exit(exit_code)
 
 def get_device_type(device):
     timeout = 10
@@ -40,11 +42,7 @@ def get_device_type(device):
     elif device_type == "Moto G (5)":
         pass
     else:
-        print(
-            "TEST-UNEXPECTED-FAIL | bitbar | Unknown device ('%s')! Contact Android Relops immediately."
-            % device_type
-        )
-        sys.exit(1)
+        fatal("Unknown device ('%s')! Contact Android Relops immediately." % device_type, retry=False)
     return device_type
 
 
@@ -80,19 +78,9 @@ def enable_charging(device, device_type):
                     "echo %s > %s" % (1, g5_path), root=True, timeout=timeout
                 )
         else:
-            print(
-                "TEST-UNEXPECTED-FAIL | bitbar | Unknown device ('%s')! Contact Android Relops immediately."
-                % device_type
-            )
-            rc = 1
+            fatal("Unknown device ('%s')! Contact Android Relops immediately." % device_type, retry=False)
     except (ADBTimeoutError, ADBError) as e:
-        print(
-            "TEST-UNEXPECTED-FAIL | bitbar | Failed to enable charging. Contact Android Relops immediately."
-        )
-        print("{}: {}".format(e.__class__.__name__, e))
-        rc = 1
-
-    return rc
+        fatal("Failed to enable charging. Contact Android Relops immediately.", exception=e, retry=False)
 
 
 def main():
@@ -204,7 +192,7 @@ def main():
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
-    rc = enable_charging(device, device_type) + rc
+    enable_charging(device, device_type)
 
     try:
         if env['DEVICE_SERIAL'].endswith(':5555'):
@@ -222,9 +210,7 @@ def main():
         print('{} attempting netstat'.format(e))
 
     print('script.py exitcode {}'.format(rc))
-    if rc == 0:
-        return 0
-    return 1
+    return rc
 
 if __name__ == "__main__":
     sys.exit(main())
