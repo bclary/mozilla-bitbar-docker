@@ -76,9 +76,13 @@ def enable_charging(device, device_type):
                 )
         else:
             fatal("Unknown device ('%s')! Contact Android Relops immediately." % device_type, retry=False)
-    except (ADBTimeoutError, ADBError) as e:
+    except ADBError as e:
         fatal("Failed to enable charging. Contact Android Relops immediately.", exception=e, retry=False)
-
+    except ADBTimeoutError as e:
+        print(
+            "TEST-WARNING | bitbar | Timed out trying to enable charging."
+        )
+        print("{}: {}".format(e.__class__.__name__, e))
 
 def main():
     parser = argparse.ArgumentParser(
