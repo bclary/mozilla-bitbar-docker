@@ -136,6 +136,8 @@ RUN cd /tmp && \
     pip install setuptools -U && \
     pip install mozdevice==3.0.5 && \
     pip install google-cloud-logging && \
+    pip install zstandard==0.11.1 && \
+    pip3 install zstandard==0.11.1 && \
     rm -rf /tmp/* && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /builds/worker/Downloads/* && \
