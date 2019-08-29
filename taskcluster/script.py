@@ -166,6 +166,8 @@ def main():
         print('Android device version (ro.build.version.release):  {}'.format(android_version))
         # this can explode if an unknown device, explode now vs in an hour...
         device_type = get_device_type(device)
+        # TODO: show the device's date to make correlation easier
+        # - docker is in UTC, device is in PST
 
         # clean up the device.
         device.rm('/data/local/tests', recursive=True, force=True, root=True)
