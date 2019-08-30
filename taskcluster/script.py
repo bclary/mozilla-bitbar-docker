@@ -166,7 +166,7 @@ def main():
         # this can explode if an unknown device, explode now vs in an hour...
         device_type = get_device_type(device)
         # set device to UTC
-        device.shell('setprop persist.sys.timezone "UTC"', timeout=ADB_COMMAND_TIMEOUT)
+        device.shell_output('setprop persist.sys.timezone "UTC"', root=True, timeout=ADB_COMMAND_TIMEOUT)
         # show date for visual confirmation
         device_datetime = device.shell_output("date", timeout=ADB_COMMAND_TIMEOUT)
         print('Android device datetime:  {}'.format(device_datetime))
