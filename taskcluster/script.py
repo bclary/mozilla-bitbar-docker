@@ -15,6 +15,7 @@ from glob import glob
 from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
 
 MAX_NETWORK_ATTEMPTS = 3
+ADB_COMMAND_TIMEOUT = 10
 
 
 def fatal(message, exception=None, retry=True):
@@ -166,6 +167,11 @@ def main():
         print('Android device version (ro.build.version.release):  {}'.format(android_version))
         # this can explode if an unknown device, explode now vs in an hour...
         device_type = get_device_type(device)
+        # set device to UTC
+        device.shell('setprop persist.sys.timezone "UTC"', timeout=ADB_COMMAND_TIMEOUT)
+        # show date for visual confirmation
+        device_datetime = device.shell_output("date", timeout=ADB_COMMAND_TIMEOUT)
+        print('Android device datetime:  {}'.format(device_datetime))
 
         # clean up the device.
         device.rm('/data/local/tests', recursive=True, force=True, root=True)
