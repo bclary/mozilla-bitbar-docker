@@ -33,6 +33,14 @@ def fatal(message, exception=None, retry=True):
         print("{}: {}".format(exception.__class__.__name__, exception))
     sys.exit(exit_code)
 
+def show_df():
+    try:
+        print('\df -h\n%s\n\n' % subprocess.check_output(
+            ['df', '-h'],
+            stderr=subprocess.STDOUT))
+    except subprocess.CalledProcessError as e:
+        print('{} attempting df'.format(e))
+
 def get_device_type(device):
     device_type = device.shell_output("getprop ro.product.model", timeout=ADB_COMMAND_TIMEOUT)
     if device_type == "Pixel 2":
@@ -131,6 +139,8 @@ def main():
         env['HOME'] = '/builds/worker'
         print('setting HOME to {}'.format(env['HOME']))
 
+    show_df()
+
     # If we are running normal tests we will be connected via usb and
     # there should be only one device connected.  If we are running
     # power tests, the framework will have already called adb tcpip
@@ -215,6 +225,8 @@ def main():
             stderr=subprocess.STDOUT))
     except subprocess.CalledProcessError as e:
         print('{} attempting netstat'.format(e))
+
+    show_df()
 
     print('script.py exitcode {}'.format(rc))
     return rc
