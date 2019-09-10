@@ -8,7 +8,7 @@
     "numberOfTasksToRun":         1,
     "provisionerId":              "proj-autophone",
     "publicIP":                   "127.0.0.1",
-    "requiredDiskSpaceMegabytes": 5000,
+    "requiredDiskSpaceMegabytes": 6500,
     "rootURL":                    "https://taskcluster.net",
     "workerGroup":                "${TC_WORKER_GROUP}",
     "workerId":                   "${DEVICE_NAME}",
