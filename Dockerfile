@@ -84,7 +84,7 @@ RUN git clone --branch v1.2.13 git://github.com/pyenv/pyenv.git .pyenv && \
 # download things
 ADD https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
 ADD https://dl.google.com/android/android-sdk_r24.3.4-linux.tgz /builds/worker/Downloads
-ADD https://github.com/taskcluster/generic-worker/releases/download/v14.1.0/generic-worker-nativeEngine-linux-amd64 /usr/local/bin/generic-worker
+ADD https://github.com/taskcluster/generic-worker/releases/download/v16.0.0/generic-worker-simple-linux-amd64 /usr/local/bin/generic-worker
 ADD https://github.com/taskcluster/livelog/releases/download/v1.1.0/livelog-linux-amd64 /usr/local/bin/livelog
 ADD https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip /builds/worker/Downloads
 
