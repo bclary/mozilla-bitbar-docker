@@ -70,17 +70,6 @@ ENV    HOME=/builds/worker \
        LC_ALL=en_US.UTF-8 \
        PATH=$PATH:/builds/worker/bin
 
-# install pyenv and python 3
-ENV PYENV_ROOT=$HOME/.pyenv
-ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
-ENV PY3_VERSION=3.7.4
-ENV PY2_VERSION=2.7.16
-RUN git clone --branch v1.2.13 git://github.com/pyenv/pyenv.git .pyenv && \
-    pyenv install ${PY3_VERSION} && \
-    pyenv install ${PY2_VERSION} && \
-    pyenv global ${PY2_VERSION} ${PY3_VERSION} && \
-    pyenv rehash
-
 # download things
 ADD https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
 ADD https://dl.google.com/android/android-sdk_r24.3.4-linux.tgz /builds/worker/Downloads
