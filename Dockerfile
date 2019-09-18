@@ -102,9 +102,9 @@ COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY scripts/run_gw.py /usr/local/bin/run_gw.py
 COPY scripts/tooltool.py /usr/local/bin/tooltool.py
 
-COPY scripts/minidump_stackwalk /usr/local/bin/minidump_stackwalk
-
 # testing only
+COPY scripts/minidump_stackwalk /usr/local/bin/minidump_stackwalk
+#
 COPY scripts/linux64-minidump_stackwalk.manifest /builds/worker/linux64-minidump_stackwalk.manifest
 RUN tooltool.py fetch -m linux64-minidump_stackwalk.manifest && \
         chmod 755 linux64-minidump_stackwalk
