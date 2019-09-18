@@ -1,10 +1,5 @@
 FROM ubuntu:18.04
 
-# RUN apt-get update && apt-get install -y software-properties-common python-software-properties
-# RUN add-apt-repository ppa:openjdk-r/ppa
-
-# libcurl3 required for minidump_stackwalk from releng tooltool
-
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
