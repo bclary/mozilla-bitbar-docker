@@ -1,9 +1,11 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
-RUN apt-get update && apt-get install -y software-properties-common python-software-properties
-RUN add-apt-repository ppa:openjdk-r/ppa
+# RUN apt-get update && apt-get install -y software-properties-common python-software-properties
+# RUN add-apt-repository ppa:openjdk-r/ppa
 
 # libcurl3 required for minidump_stackwalk from releng tooltool
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get install -y \
@@ -16,7 +18,8 @@ RUN apt-get update && \
     libavcodec-dev \
     libavformat-dev \
     libbz2-dev \
-    libcurl3 \
+    libcurl4 \
+    libcurl4-openssl-dev \
     libffi-dev \
     libgconf-2-4 \
     libgtk-3-0 \
@@ -98,6 +101,13 @@ COPY scripts/entrypoint.py /usr/local/bin/entrypoint.py
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY scripts/run_gw.py /usr/local/bin/run_gw.py
 COPY scripts/tooltool.py /usr/local/bin/tooltool.py
+
+COPY scripts/minidump_stackwalk /usr/local/bin/minidump_stackwalk
+
+# testing only
+COPY scripts/linux64-minidump_stackwalk.manifest /builds/worker/linux64-minidump_stackwalk.manifest
+RUN tooltool.py fetch -m linux64-minidump_stackwalk.manifest && \
+        chmod 755 linux64-minidump_stackwalk
 
 # touch /root/.android/repositories.cfg to suppress warnings that is
 # it missing during sdkmanager updates.
