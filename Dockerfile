@@ -7,6 +7,7 @@ RUN apt-get update && \
     curl \
     dnsutils \
     ffmpeg \
+    gettext-base \
     git \
     lib32stdc++6 \
     lib32z1 \
