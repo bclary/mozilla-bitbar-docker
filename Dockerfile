@@ -43,6 +43,9 @@ RUN apt-get update && \
     zlib1g-dev && \
     apt-get clean all -y
 
+RUN mkdir -p /etc/generic-worker /var/local/generic-worker
+RUN echo 127.0.1.1 taskcluster >> /etc/hosts
+
 RUN mkdir /builds && \
     useradd -d /builds/worker -s /bin/bash -m worker
 
@@ -73,7 +76,8 @@ ENV    HOME=/builds/worker \
 # download things
 ADD https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
 ADD https://dl.google.com/android/android-sdk_r24.3.4-linux.tgz /builds/worker/Downloads
-ADD https://github.com/taskcluster/generic-worker/releases/download/v16.0.0/generic-worker-simple-linux-amd64 /usr/local/bin/generic-worker
+# ADD https://github.com/taskcluster/generic-worker/releases/download/v16.0.0/generic-worker-simple-linux-amd64 /usr/local/bin/generic-worker
+ADD https://github.com/taskcluster/generic-worker/releases/download/v16.1.0/generic-worker-multiuser-linux-amd64 /usr/local/bin/generic-worker
 ADD https://github.com/taskcluster/livelog/releases/download/v1.1.0/livelog-linux-amd64 /usr/local/bin/livelog
 ADD https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip /builds/worker/Downloads
 
