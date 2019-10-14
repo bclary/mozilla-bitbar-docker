@@ -103,6 +103,9 @@ COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY scripts/run_gw.py /usr/local/bin/run_gw.py
 COPY scripts/tooltool.py /usr/local/bin/tooltool.py
 
+# TESTING: fake out gdm config file
+COPY scripts/empty_file /etc/gdm3/custom.conf
+
 # touch /root/.android/repositories.cfg to suppress warnings that is
 # it missing during sdkmanager updates.
 
