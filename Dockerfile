@@ -100,7 +100,7 @@ COPY scripts/run_gw.py /usr/local/bin/run_gw.py
 COPY scripts/tooltool.py /usr/local/bin/tooltool.py
 
 # place usb udev rule
-COPY scripts/40-usb.rules /etc/udev/rules.d/40-usb.rules
+COPY scripts/adb-udev.rules /etc/udev/rules.d/52-android.rules
 
 # touch /root/.android/repositories.cfg to suppress warnings that is
 # it missing during sdkmanager updates.
