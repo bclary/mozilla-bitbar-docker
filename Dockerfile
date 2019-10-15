@@ -99,7 +99,7 @@ COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY scripts/run_gw.py /usr/local/bin/run_gw.py
 COPY scripts/tooltool.py /usr/local/bin/tooltool.py
 
-# place usb udev rule
+# place android adb udev rule
 COPY scripts/adb-udev.rules /etc/udev/rules.d/52-android.rules
 
 # touch /root/.android/repositories.cfg to suppress warnings that is
