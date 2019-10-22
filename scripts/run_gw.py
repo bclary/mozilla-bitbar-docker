@@ -57,7 +57,7 @@ while True:
     # https://github.com/taskcluster/generic-worker/blob/d3dda694d0031e8f1cd085f06c3b0f810321dac2/main.go#L485
     gw_resolved_count_file = "tasks-resolved-count.txt"
     if os.path.exists(gw_resolved_count_file):
-        print("%s/INFO: removed gw_resolved_count_file at '%s'" % gw_resolved_count_file)
+        print("%s/INFO: removed gw_resolved_count_file at '%s'" % (script_name, gw_resolved_count_file))
         os.remove(gw_resolved_count_file)
 
     print("%s/INFO: command to run is: '%s'" % (script_name, " ".join(cmd_arr)))
