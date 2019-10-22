@@ -52,6 +52,14 @@ while True:
     superseded = False
     rc = None
 
+    # see https://bugzilla.mozilla.org/show_bug.cgi?id=1375514
+    # prevents g-w from never reaching termination condition when we do our supersede reruns and device issues occur
+    # https://github.com/taskcluster/generic-worker/blob/d3dda694d0031e8f1cd085f06c3b0f810321dac2/main.go#L485
+    gw_resolved_count_file = "tasks-resolved-count.txt"
+    if os.path.exists(gw_resolved_count_file):
+        print("%s/INFO: removed gw_resolved_count_file at '%s'" % gw_resolved_count_file)
+        os.remove(gw_resolved_count_file)
+
     print("%s/INFO: command to run is: '%s'" % (script_name, " ".join(cmd_arr)))
     # run command
     proc = subprocess.Popen(cmd_arr,
