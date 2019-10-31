@@ -40,6 +40,7 @@ RUN apt-get update && \
     xvfb \
     zip \
     zlib1g-dev && \
+    zstd && \
     apt-get clean all -y
 
 RUN mkdir /builds && \
