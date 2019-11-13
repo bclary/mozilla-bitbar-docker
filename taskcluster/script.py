@@ -204,8 +204,11 @@ def main():
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
     while rc == None:
+        written = 0
         line = proc.stdout.readline()
-        sys.stdout.write(line)
+        line_bytelen = len(bytes(line))
+        while written < line_bytelen:
+            written += (sys.stdout.write(line) or 0)
         rc = proc.poll()
 
     # enable charging on device if it is disabled
