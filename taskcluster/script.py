@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -207,9 +207,9 @@ def main():
     while rc == None:
         written = 0
         line = proc.stdout.readline()
-        line_bytelen = len(bytes(line))
+        line_bytelen = len(line)
         while written < line_bytelen:
-            written += (sys.stdout.write(line) or 0)
+            written += sys.stdout.write(str(line))
         rc = proc.poll()
     print("script.py payload command finished")
 
