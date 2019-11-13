@@ -199,6 +199,7 @@ def main():
     print(' '.join(extra_args))
     rc = None
     proc = subprocess.Popen(extra_args,
+                            bufsize=0,
                             env=env,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
