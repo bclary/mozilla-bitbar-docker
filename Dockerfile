@@ -123,7 +123,7 @@ RUN cd /tmp && \
     # upgrade the builtin setuptools
     pip install setuptools -U && \
     pip3 install setuptools -U && \
-    # pips used by pips
+    # pips used by scripts in this docker image
     pip install google-cloud-logging && \
     pip3 install google-cloud-logging && \
     pip install mozdevice==3.0.5 && \
