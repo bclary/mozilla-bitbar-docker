@@ -53,6 +53,7 @@ def get_device_type(device):
 
 
 def enable_charging(device, device_type):
+    print("script.py: enabling charging...")
     p2_path = "/sys/class/power_supply/battery/input_suspend"
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
 
@@ -210,6 +211,7 @@ def main():
         while written < line_bytelen:
             written += (sys.stdout.write(line) or 0)
         rc = proc.poll()
+    print("script.py payload command finished")
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
