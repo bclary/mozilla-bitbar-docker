@@ -101,7 +101,7 @@ def main():
                         level=logging.INFO,
                         stream=sys.stdout)
 
-    print('\nBegin script.py')
+    print('\nscript.py: starting')
     with open('/builds/worker/version') as versionfile:
         version = versionfile.read().strip()
     print('\nDockerfile version {}'.format(version))
@@ -211,7 +211,7 @@ def main():
         while written < line_bytelen:
             written += sys.stdout.write(str(line))
         rc = proc.poll()
-    print("script.py payload command finished")
+    print("script.py: payload command finished")
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
@@ -234,7 +234,7 @@ def main():
 
     show_df()
 
-    print('script.py exitcode {}'.format(rc))
+    print('script.py: exiting with exitcode {}.'.format(rc))
     return rc
 
 if __name__ == "__main__":
