@@ -204,14 +204,18 @@ def main():
                             env=env,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
-    while rc == None:
-        written = 0
-        line = proc.stdout.readline()
-        line_bytelen = len(line)
-        while written < line_bytelen:
-            written += sys.stdout.write(str(line))
+    read = 0
+    written = 0
+    while True:
+        output = proc.stdout.readline()
+        line_len = len(output)
         rc = proc.poll()
-    print("script.py: command finished")
+        if line_len == 0 and written == read and rc is not None:
+            break
+        read += len(output)
+        if output:
+            written += sys.stdout.write(str(output.decode()))
+    print("script.py: command finished (bytes read: %s, bytes written: %s)" % (read, written))
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
