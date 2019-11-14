@@ -207,8 +207,8 @@ def main():
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
     while True:
-        output = proc.stdout.readline()
-        line_len = len(output)
+        line = proc.stdout.readline()
+        line_len = len(line)
         rc = proc.poll()
         if line_len == 0 and written == read and rc is not None:
             break
