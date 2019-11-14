@@ -211,10 +211,10 @@ def main():
         line_len = len(line)
         read += line_len
         rc = proc.poll()
+        if line:
+            written += sys.stdout.write(str(line.decode()))        
         if line_len == 0 and written == read and rc is not None:
             break
-        if line:
-            written += sys.stdout.write(str(line.decode()))
     print("script.py: command finished (bytes read: %s, bytes written: %s)" % (read, written))
 
     # enable charging on device if it is disabled
