@@ -53,7 +53,7 @@ def get_device_type(device):
 
 
 def enable_charging(device, device_type):
-    print("script.py: enabling charging...")
+    print("script.py: enabling charging for %s (%s)..." % (device, device_type))
     p2_path = "/sys/class/power_supply/battery/input_suspend"
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
 
