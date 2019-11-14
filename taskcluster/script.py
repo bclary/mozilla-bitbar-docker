@@ -211,7 +211,7 @@ def main():
         while written < line_bytelen:
             written += sys.stdout.write(str(line))
         rc = proc.poll()
-    print("script.py: payload command finished")
+    print("script.py: command finished")
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
