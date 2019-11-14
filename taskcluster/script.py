@@ -199,13 +199,13 @@ def main():
     # run the payload's command
     print(' '.join(extra_args))
     rc = None
+    read = 0
+    written = 0
     proc = subprocess.Popen(extra_args,
                             bufsize=0,
                             env=env,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
-    read = 0
-    written = 0
     while True:
         output = proc.stdout.readline()
         line_len = len(output)
