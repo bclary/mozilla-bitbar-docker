@@ -209,10 +209,10 @@ def main():
     while True:
         line = proc.stdout.readline()
         line_len = len(line)
+        read += line_len
         rc = proc.poll()
         if line_len == 0 and written == read and rc is not None:
             break
-        read += line_len
         if line:
             written += sys.stdout.write(str(line.decode()))
     print("script.py: command finished (bytes read: %s, bytes written: %s)" % (read, written))
