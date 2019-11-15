@@ -197,7 +197,7 @@ def main():
     print('environment = {}'.format(json.dumps(env, indent=4)))
 
     # run the payload's command
-    print(' '.join(extra_args))
+    print("script.py: running command '%s'" % ' '.join(extra_args))
     rc = None
     read = 0
     written = 0
@@ -212,7 +212,7 @@ def main():
         read += line_len
         rc = proc.poll()
         if line:
-            written += sys.stdout.write(str(line.decode()))        
+            written += sys.stdout.write(str(line.decode()))
         if line_len == 0 and written == read and rc is not None:
             break
     print("script.py: command finished (bytes read: %s, bytes written: %s)" % (read, written))
