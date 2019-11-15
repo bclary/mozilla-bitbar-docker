@@ -199,8 +199,8 @@ def main():
     # run the payload's command
     print("script.py: running command '%s'" % ' '.join(extra_args))
     rc = None
-    read = 0
-    written = 0
+    bytes_read = 0
+    bytes_written = 0
     proc = subprocess.Popen(extra_args,
                             bufsize=0,
                             env=env,
@@ -209,13 +209,13 @@ def main():
     while True:
         line = proc.stdout.readline()
         line_len = len(line)
-        read += line_len
+        bytes_read += line_len
         rc = proc.poll()
         if line:
-            written += sys.stdout.write(str(line.decode()))
-        if line_len == 0 and written == read and rc is not None:
+            bytes_written += sys.stdout.write(str(line.decode()))
+        if line_len == 0 and bytes_written == bytes_read and rc is not None:
             break
-    print("script.py: command finished (bytes read: %s, bytes written: %s)" % (read, written))
+    print("script.py: command finished (bytes read: %s, bytes written: %s)" % (bytes_read, bytes_written))
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
