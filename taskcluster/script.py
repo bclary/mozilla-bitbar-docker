@@ -217,7 +217,6 @@ def main():
         rc = proc.poll()
         if line:
             bytes_written += sys.stdout.write(str(line.decode()))
-        # print("ll: %s, bw: %s, br: %s, rc: %s" % (line_len, bytes_written, bytes_read, rc))
         if line_len == 0 and bytes_written == bytes_read and rc is not None:
             break
     print("script.py: command finished (bytes read: %s, bytes written: %s)" % (bytes_read, bytes_written))
