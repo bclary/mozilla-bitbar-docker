@@ -37,7 +37,7 @@ def show_df():
     try:
         print('\df -h\n%s\n\n' % subprocess.check_output(
             ['df', '-h'],
-            stderr=subprocess.STDOUT))
+            stderr=subprocess.STDOUT).decode())
     except subprocess.CalledProcessError as e:
         print('{} attempting df'.format(e))
 
@@ -236,7 +236,7 @@ def main():
     try:
         print('\nnetstat -aop\n%s\n\n' % subprocess.check_output(
             ['netstat', '-aop'],
-            stderr=subprocess.STDOUT))
+            stderr=subprocess.STDOUT).decode())
     except subprocess.CalledProcessError as e:
         print('{} attempting netstat'.format(e))
 
