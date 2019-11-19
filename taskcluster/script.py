@@ -35,7 +35,7 @@ def fatal(message, exception=None, retry=True):
 
 def show_df():
     try:
-        print('\df -h\n%s\n\n' % subprocess.check_output(
+        print('\ndf -h\n%s\n\n' % subprocess.check_output(
             ['df', '-h'],
             stderr=subprocess.STDOUT).decode())
     except subprocess.CalledProcessError as e:
@@ -55,7 +55,7 @@ def get_device_type(device):
 
 
 def enable_charging(device, device_type):
-    print("script.py: enabling charging for %s (%s)..." % (device, device_type))
+    print("script.py: enabling charging for device '%s' ('%s')..." % (device_type, device.get_info('id')['id']))
     p2_path = "/sys/class/power_supply/battery/input_suspend"
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
 
