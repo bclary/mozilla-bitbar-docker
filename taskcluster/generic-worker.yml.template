@@ -13,6 +13,6 @@
     "workerGroup":                "${TC_WORKER_GROUP}",
     "workerId":                   "${DEVICE_NAME}",
     "workerType":                 "${TC_WORKER_TYPE}",
-    "wstAudience":                "taskcluster-net",
+    "wstAudience":                "firefoxcitc",
     "wstServerURL":               "https://websocktunnel.tasks.build"
 }
