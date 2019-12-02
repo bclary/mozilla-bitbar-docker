@@ -197,7 +197,7 @@ def main():
     except ADBError as e:
         fatal("{} attempting to clean up device".format(e), retry=True)
     except ADBTimeoutError as e:
-        fatal('{} Unable to obtain attached devices'.format(e), retry=True)
+        fatal("{} attempting to clean up device".format(e), retry=True)
 
     if taskcluster_debug:
         env['DEBUG'] = taskcluster_debug
