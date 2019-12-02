@@ -162,9 +162,9 @@ def main():
         print(json.dumps(devices, indent=4))
         if len(devices) != 1:
             fatal('Must have exactly one connected device. {} found.'.format(len(devices)), retry=True)
-    except ADBTimeoutError as e:
-        fatal('{} Unable to obtain attached devices'.format(e), retry=True)
     except ADBError as e:
+        fatal('{} Unable to obtain attached devices'.format(e), retry=True)
+    except ADBTimeoutError as e:
         fatal('{} Unable to obtain attached devices'.format(e), retry=True)
 
     try:
@@ -196,6 +196,8 @@ def main():
         device.rm('/sdcard/raptor-profile', recursive=True, force=True, root=True)
     except ADBError as e:
         fatal("{} attempting to clean up device".format(e))
+    except ADBTimeoutError as e:
+        fatal('{} Unable to obtain attached devices'.format(e), retry=True)
 
     if taskcluster_debug:
         env['DEBUG'] = taskcluster_debug
