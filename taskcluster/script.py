@@ -161,9 +161,11 @@ def main():
         devices = adbhost.devices()
         print(json.dumps(devices, indent=4))
         if len(devices) != 1:
-            fatal('Must have exactly one connected device. {} found.'.format(len(devices)))
+            fatal('Must have exactly one connected device. {} found.'.format(len(devices)), retry=True)
+    except ADBTimeoutError as e:
+        fatal('{} Unable to obtain attached devices'.format(e), retry=True)
     except ADBError as e:
-        fatal('{} Unable to obtain attached devices'.format(e))
+        fatal('{} Unable to obtain attached devices'.format(e), retry=True)
 
     try:
         for f in glob('/tmp/adb.*.log'):
