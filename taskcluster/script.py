@@ -195,7 +195,7 @@ def main():
         device.rm('/sdcard/tests', recursive=True, force=True, root=True)
         device.rm('/sdcard/raptor-profile', recursive=True, force=True, root=True)
     except ADBError as e:
-        fatal("{} attempting to clean up device".format(e))
+        fatal("{} attempting to clean up device".format(e), retry=True)
     except ADBTimeoutError as e:
         fatal('{} Unable to obtain attached devices'.format(e), retry=True)
 
