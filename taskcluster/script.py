@@ -154,7 +154,7 @@ def main():
     # to connect to the device. DEVICE_SERIAL will be set to either
     # the device's serial number or its ipaddress:5555 by the framework.
     try:
-        adbhost = ADBHost()
+        adbhost = ADBHost(verbose=True)
         if env['DEVICE_SERIAL'].endswith(':5555'):
             # Power testing with adb over wifi.
             adbhost.command_output(["connect", env['DEVICE_SERIAL']])
