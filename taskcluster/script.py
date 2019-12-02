@@ -162,9 +162,7 @@ def main():
         print(json.dumps(devices, indent=4))
         if len(devices) != 1:
             fatal('Must have exactly one connected device. {} found.'.format(len(devices)), retry=True)
-    except ADBError as e:
-        fatal('{} Unable to obtain attached devices'.format(e), retry=True)
-    except ADBTimeoutError as e:
+    except (ADBError, ADBTimeoutError) as e:
         fatal('{} Unable to obtain attached devices'.format(e), retry=True)
 
     try:
@@ -194,9 +192,7 @@ def main():
         device.rm('/data/local/tmp/xpcb', recursive=True, force=True, root=True)
         device.rm('/sdcard/tests', recursive=True, force=True, root=True)
         device.rm('/sdcard/raptor-profile', recursive=True, force=True, root=True)
-    except ADBError as e:
-        fatal("{} attempting to clean up device".format(e), retry=True)
-    except ADBTimeoutError as e:
+    except (ADBError, ADBTimeoutError) as e:
         fatal("{} attempting to clean up device".format(e), retry=True)
 
     if taskcluster_debug:
@@ -234,9 +230,7 @@ def main():
             device.command_output(["usb"])
             adbhost.command_output(["disconnect", env['DEVICE_SERIAL']])
         adbhost.kill_server()
-    except ADBError as e:
-        print('{} attempting adb kill-server'.format(e))
-    except ADBError as e:
+    except (ADBError, ADBTimeoutError) as e:
         print('{} attempting adb kill-server'.format(e))
 
     try:
