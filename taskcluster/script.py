@@ -235,9 +235,9 @@ def main():
             adbhost.command_output(["disconnect", env['DEVICE_SERIAL']])
         adbhost.kill_server()
     except ADBError as e:
-        print('{} attempting adb kill-server'.format(e), retry=True)
+        print('{} attempting adb kill-server'.format(e))
     except ADBError as e:
-        print('{} attempting adb kill-server'.format(e), retry=True)
+        print('{} attempting adb kill-server'.format(e))
 
     try:
         print('\nnetstat -aop\n%s\n\n' % subprocess.check_output(
