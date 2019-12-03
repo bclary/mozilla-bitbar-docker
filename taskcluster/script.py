@@ -212,11 +212,12 @@ def main():
                             stderr=subprocess.STDOUT)
     while True:
         line = proc.stdout.readline()
-        line_len = len(line)
+        decoded_line = line.decode()
+        line_len = len(decoded_line)
         bytes_read += line_len
         rc = proc.poll()
         if line:
-            bytes_written += sys.stdout.write(str(line.decode()))
+            bytes_written += sys.stdout.write(decoded_line)
         if line_len == 0 and bytes_written == bytes_read and rc is not None:
             break
     print("script.py: command finished (bytes read: %s, bytes written: %s)" % (bytes_read, bytes_written))
