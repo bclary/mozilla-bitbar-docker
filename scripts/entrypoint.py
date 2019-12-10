@@ -32,6 +32,7 @@ def dump_scriptvars():
         "HOST_IP",
         "HOSTNAME",
         "PATH",
+        "PYTHONIOENCODING",
         "TC_WORKER_GROUP",
         "TC_WORKER_TYPE",
         "TESTDROID_BUILD_ID",
