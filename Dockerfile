@@ -62,6 +62,8 @@ RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
 # Set variables normally configured at login, by the shells parent process, these
 # are taken from GNU su manual
+# - PYTHONIOENCODING is set so that unicode characters can be output
+#   - see https://bugzilla.mozilla.org/show_bug.cgi?id=1600833
 
 ENV    HOME=/builds/worker \
        SHELL=/bin/bash \
