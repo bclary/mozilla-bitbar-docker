@@ -218,6 +218,8 @@ def main():
             temp_bytes_written = 0
             while temp_bytes_written != line_len:
                 temp_bytes_written += sys.stdout.write(decoded_line)
+                if temp_bytes_written != line_len:
+                    print("script.py: sys.stdout.write underwrite (%d vs %d)!" % (temp_bytes_written, line_len))
             bytes_written += temp_bytes_written
         if line_len == 0 and bytes_written == bytes_read and rc is not None:
             break
