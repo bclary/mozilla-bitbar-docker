@@ -14,5 +14,5 @@
     "workerId":                   "${DEVICE_NAME}",
     "workerType":                 "${TC_WORKER_TYPE}",
     "wstAudience":                "firefoxcitc",
-    "wstServerURL":               "https://websocktunnel.tasks.build"
+    "wstServerURL":               "https://firefoxci-websocktunnel.services.mozilla.com/"
 }
