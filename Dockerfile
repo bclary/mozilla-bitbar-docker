@@ -114,6 +114,7 @@ COPY scripts/tooltool.py /usr/local/bin/tooltool.py
 RUN cd /tmp && \
     chmod +x /usr/local/bin/generic-worker && \
     chmod +x /usr/local/bin/livelog && \
+    chmod +x /usr/local/bin/taskcluster-proxy && \
     chmod +x /usr/local/bin/tooltool.py && \
     chmod +x /usr/local/bin/entrypoint.* && \
     chmod +x /builds/taskcluster/script.py && \
