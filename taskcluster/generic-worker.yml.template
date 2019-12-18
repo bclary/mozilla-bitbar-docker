@@ -10,6 +10,7 @@
     "publicIP":                   "127.0.0.1",
     "requiredDiskSpaceMegabytes": 6500,
     "rootURL":                    "https://firefox-ci-tc.services.mozilla.com",
+    "taskclusterProxyPort":       8099,
     "workerGroup":                "${TC_WORKER_GROUP}",
     "workerId":                   "${DEVICE_NAME}",
     "workerType":                 "${TC_WORKER_TYPE}",
