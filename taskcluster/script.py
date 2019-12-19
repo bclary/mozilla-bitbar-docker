@@ -55,11 +55,11 @@ def get_device_type(device):
 
 
 def enable_charging(device, device_type):
-    print("script.py: enabling charging for device '%s' ('%s')..." % (device_type, device.get_info('id')['id']))
     p2_path = "/sys/class/power_supply/battery/input_suspend"
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
 
     try:
+        print("script.py: enabling charging for device '%s' ('%s')..." % (device_type, device.get_info('id')['id']))
         if device_type == "Pixel 2":
             p2_charging_disabled = (
                 device.shell_output(
