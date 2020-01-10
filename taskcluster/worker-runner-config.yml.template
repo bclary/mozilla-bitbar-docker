@@ -13,7 +13,7 @@ worker:
     path: /usr/local/bin/generic-worker
     # path where taskcluster-worker-runner should write the generated
     # generic-worker configuration.
-    configPath: /etc/taskcluster/generic-worker/config.yaml
+    configPath: /builds/taskcluster/generic-worker.yml
 workerConfig:
     genericWorker:
       config:
