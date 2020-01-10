@@ -80,6 +80,7 @@ ADD https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip /builds
 ADD https://github.com/taskcluster/generic-worker/releases/download/v16.0.0/generic-worker-simple-linux-amd64 /usr/local/bin/generic-worker
 ADD https://github.com/taskcluster/livelog/releases/download/v1.1.0/livelog-linux-amd64 /usr/local/bin/livelog
 ADD https://github.com/taskcluster/taskcluster-proxy/releases/download/v5.1.0/taskcluster-proxy-linux-amd64 /usr/local/bin/taskcluster-proxy
+ADD https://github.com/taskcluster/taskcluster-worker-runner/releases/download/v1.0.2/start-worker-linux-amd64 /usr/local/bin/start-worker
 
 # for testing builds (these lines mirror above), copy above artifacts from the downloads dir
 # COPY downloads/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
