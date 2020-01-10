@@ -89,6 +89,7 @@ ADD https://github.com/taskcluster/taskcluster-worker-runner/releases/download/v
 # COPY downloads/generic-worker-nativeEngine-linux-amd64 /usr/local/bin/generic-worker
 # COPY downloads/livelog-linux-amd64 /usr/local/bin/livelog
 # COPY downloads/taskcluster-proxy-linux-amd64 /usr/local/bin/taskcluster-proxy
+# COPY downloads/start-worker-linux-amd64 /usr/local/bin/start-worker
 
 # copy stackdriver credentials over
 COPY stackdriver_credentials.json /etc/google/stackdriver_credentials.json
