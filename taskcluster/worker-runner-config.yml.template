@@ -3,7 +3,7 @@ provider:
     rootURL: "https://firefox-ci-tc.services.mozilla.com"
     clientID: "${TASKCLUSTER_CLIENT_ID}"
     accessToken: "${TASKCLUSTER_ACCESS_TOKEN}"
-    workerPoolID: "blah/${TC_WORKER_TYPE}"
+    workerPoolID: "proj-autophone/${TC_WORKER_TYPE}"
     workerGroup: "${TC_WORKER_GROUP}"
     workerID: "${DEVICE_NAME}"
 getSecrets: false
@@ -19,7 +19,7 @@ workerConfig:
     genericWorker:
         config:
             certificate:                ""
-            d25519SigningKeyLocation:   "${ED25519_PRIVKEY}"
+            ed25519SigningKeyLocation:   "${ED25519_PRIVKEY}"
             idleTimeoutSecs:            90
             livelogExecutable:          "/usr/local/bin/livelog"
             numberOfTasksToRun:         1
