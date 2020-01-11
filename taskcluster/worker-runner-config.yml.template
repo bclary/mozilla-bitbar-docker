@@ -16,17 +16,15 @@ worker:
     # generic-worker configuration.
     configPath: /builds/taskcluster/generic-worker.yml
 workerConfig:
-    genericWorker:
-        config:
-            certificate:                ""
-            ed25519SigningKeyLocation:   "${ED25519_PRIVKEY}"
-            idleTimeoutSecs:            90
-            livelogExecutable:          "/usr/local/bin/livelog"
-            numberOfTasksToRun:         1
-            provisionerId:              "proj-autophone"
-            publicIP:                   "127.0.0.1"
-            requiredDiskSpaceMegabytes: 6500
-            taskclusterProxyPort:       8099
-            workerType:                 "${TC_WORKER_TYPE}"
-            wstAudience:                "firefoxcitc"
-            wstServerURL:               "https://firefoxci-websocktunnel.services.mozilla.com/"
+    certificate:                ""
+    ed25519SigningKeyLocation:   "${ED25519_PRIVKEY}"
+    idleTimeoutSecs:            90
+    livelogExecutable:          "/usr/local/bin/livelog"
+    numberOfTasksToRun:         1
+    provisionerId:              "proj-autophone"
+    publicIP:                   "127.0.0.1"
+    requiredDiskSpaceMegabytes: 6500
+    taskclusterProxyPort:       8099
+    workerType:                 "${TC_WORKER_TYPE}"
+    wstAudience:                "firefoxcitc"
+    wstServerURL:               "https://firefoxci-websocktunnel.services.mozilla.com/"
