@@ -3,9 +3,10 @@ provider:
     rootURL: "https://firefox-ci-tc.services.mozilla.com"
     clientID: "${TASKCLUSTER_CLIENT_ID}"
     accessToken: "${TASKCLUSTER_ACCESS_TOKEN}"
-    workerPoolID: "${TC_WORKER_TYPE}"
+    workerPoolID: "blah/${TC_WORKER_TYPE}"
     workerGroup: "${TC_WORKER_GROUP}"
     workerID: "${DEVICE_NAME}"
+getSecrets: false
 worker:
     implementation: generic-worker
     # path to the root of the generic-worker executable
