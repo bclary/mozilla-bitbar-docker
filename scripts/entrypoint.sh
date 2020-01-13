@@ -31,7 +31,6 @@ chown worker $ED25519_PRIVKEY
 envsubst < $CONF_PATH/generic-worker.yml.template > $CONF_PATH/generic-worker-ORIG.yml
 envsubst < $CONF_PATH/worker-runner-config.yml.template > $CONF_PATH/worker-runner-config.yml
 
-
 mkdir -p /builds/worker/.android/
 # bitbar mounts this file into root's homedir, but with g-w adb
 # is looking for it worker's homedir
