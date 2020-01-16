@@ -28,7 +28,6 @@ entrypoint.py
 cd $HOME
 generic-worker new-ed25519-keypair --file $ED25519_PRIVKEY
 chown worker $ED25519_PRIVKEY
-# envsubst < $CONF_PATH/generic-worker.yml.template > $CONF_PATH/generic-worker-ORIG.yml
 envsubst < $CONF_PATH/worker-runner-config.yml.template > $CONF_PATH/worker-runner-config.yml
 
 mkdir -p /builds/worker/.android/
