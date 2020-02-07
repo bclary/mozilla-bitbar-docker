@@ -10,6 +10,7 @@ import logging
 import os
 import subprocess
 import sys
+import time
 from glob import glob
 
 from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
@@ -203,6 +204,8 @@ def main():
     rc = None
     bytes_read = 0
     bytes_written = 0
+    debug_start = time.time()
+    last_debug_log_time = debug_start
     proc = subprocess.Popen(extra_args,
                             bufsize=0,
                             env=env,
@@ -220,7 +223,14 @@ def main():
                 temp_bytes_written += sys.stdout.write(decoded_line)
                 if temp_bytes_written != line_len:
                     print("script.py: sys.stdout.write underwrite (%d vs %d)!" % (temp_bytes_written, line_len))
+                    device.shell_output("log 'script.py: print underwrite: %d %d'" % (temp_bytes_written, line_len))
             bytes_written += temp_bytes_written
+        # if the last debug log was > 10 seconds ago, print now
+        now = time.time()
+        if now >= last_debug_log_time + 10:
+            elapsed = now - debug_start
+            last_debug_log_time = now
+            device.shell_output("log 'script.py: print debug +%s: ll:%s bw:%s br:%s rc:%s'" % (elapsed, line_len, bytes_written, bytes_read, rc))
         if line_len == 0 and bytes_written == bytes_read and rc is not None:
             break
     print("script.py: command finished (bytes read: %s, bytes written: %s)" % (bytes_read, bytes_written))
