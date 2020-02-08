@@ -235,7 +235,7 @@ def main():
                             env=env,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
-    dpi.print_to_logcat("script.py: command started")
+    dpi.print_to_logcat("command started")
     while True:
         line = proc.stdout.readline()
         decoded_line = line.decode()
