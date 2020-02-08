@@ -254,7 +254,7 @@ def main():
         if line_len == 0 and bytes_written == bytes_read and rc is not None:
             break
     print("script.py: command finished (bytes read: %s, bytes written: %s)" % (bytes_read, bytes_written))
-    dpi.print_to_logcat("ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
+    dpi.print_to_logcat("command finished: ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
