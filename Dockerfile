@@ -29,6 +29,7 @@ RUN apt-get update && \
     net-tools \
     netcat \
     openjdk-8-jdk-headless \
+    psmisc \ 
     python \
     python-pip \
     python3 \
