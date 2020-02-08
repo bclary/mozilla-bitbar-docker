@@ -37,7 +37,7 @@ class DebugPrinter:
 
     def print_to_logcat(self, a_string, print_to_screen_also=True):
         elapsed = self.get_elapsed_time()
-        msg = "script.py: %s:+%s: %s'" % (self.get_start_time(), elapsed, a_string)
+        msg = "script.py: %s:+%s: %s" % (self.get_start_time(), elapsed, a_string)
         if print_to_screen_also:
             print(msg)
         self.adb_device.shell_output("log '%s'" % msg)
