@@ -19,7 +19,7 @@ from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
 
 MAX_NETWORK_ATTEMPTS = 3
 ADB_COMMAND_TIMEOUT = 10
-TIMEOUT_MINUTES = 44
+TIMEOUT_MINUTES = 1
 
 
 class DebugPrinter:
@@ -35,11 +35,12 @@ class DebugPrinter:
     def get_start_time(self):
         return self.start_time
 
-    def print_to_logcat(self, a_string):
+    def print_to_logcat(self, a_string, print_to_screen_also=True):
         elapsed = self.get_elapsed_time()
-        self.adb_device.shell_output(
-            "log 'script.py: %s:+%s: %s'" % (self.get_start_time(), elapsed, a_string)
-        )
+        msg = "script.py: %s:+%s: %s'" % (self.get_start_time(), elapsed, a_string)
+        if print_to_screen_also:
+            print(msg)
+        self.adb_device.shell_output("log '%s'" % msg)
 
     def print_to_logcat_interval(self, a_string):
         now = time.time()
@@ -47,15 +48,23 @@ class DebugPrinter:
             self.last_log_print_time = now
             self.print_to_logcat(a_string)
 
+    def raise_timeout(self, signum, frame):
+        msg = "timeout at %s minutes" % TIMEOUT_MINUTES
+        print("script.py:" + msg)
+        self.print_to_logcat(msg)
+        # TODO: capture and send to logcat
+        subprocess.call(["/usr/bin/pstree", "-pct"])
+        raise MyTimeoutError
+
 
 class MyTimeoutError(Exception):
     pass
 
 
 @contextmanager
-def timeout(timeout_seconds):
+def timeout(timeout_seconds, a_dpi):
     # Register a function to raise a TimeoutError on the signal.
-    signal.signal(signal.SIGALRM, raise_timeout)
+    signal.signal(signal.SIGALRM, a_dpi.raise_timeout)
     # Schedule the signal to be sent after ``timeout_seconds``.
     signal.alarm(timeout_seconds)
 
@@ -69,10 +78,10 @@ def timeout(timeout_seconds):
         signal.signal(signal.SIGALRM, signal.SIG_IGN)
 
 
-def raise_timeout(signum, frame):
-    print("script.py: timeout at %s minutes" % TIMEOUT_MINUTES)
-    subprocess.call(["/usr/bin/pstree", "-pct"])
-    raise MyTimeoutError
+# def raise_timeout(signum, frame):
+#     print("script.py: timeout at %s minutes" % TIMEOUT_MINUTES)
+#     subprocess.call(["/usr/bin/pstree", "-pct"])
+#     raise MyTimeoutError
 
 
 def fatal(message, exception=None, retry=True):
@@ -266,7 +275,7 @@ def main():
     bytes_written = 0
     dpi = DebugPrinter(device)
     # timeout in x minutes
-    with timeout(TIMEOUT_MINUTES * 60):
+    with timeout(TIMEOUT_MINUTES * 60, dpi):
         proc = subprocess.Popen(extra_args,
                                 bufsize=0,
                                 env=env,
