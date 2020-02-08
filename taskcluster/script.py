@@ -8,6 +8,7 @@ import argparse
 import json
 import logging
 import os
+import shlex
 import signal
 import subprocess
 import sys
@@ -40,7 +41,7 @@ class DebugPrinter:
         msg = "script.py: %s:+%s: %s" % (self.get_start_time(), elapsed, a_string)
         if print_to_screen_also:
             print(msg)
-        self.adb_device.shell_output("log '%s'" % msg)
+        self.adb_device.shell_output("log %s" % msg)
 
     def print_to_logcat_interval(self, a_string):
         now = time.time()
@@ -51,7 +52,8 @@ class DebugPrinter:
     def raise_timeout(self, signum, frame):
         self.print_to_logcat("timeout at %s minute(s)" % TIMEOUT_MINUTES)
         output = subprocess.getoutput("/usr/bin/pstree -aApct")
-        self.print_to_logcat("pstree: \n" + output + "\n")
+        fixed_output = shlex.quote(output)
+        self.print_to_logcat("pstree: \n" + fixed_output + "\n")
         raise MyTimeoutError
 
 
