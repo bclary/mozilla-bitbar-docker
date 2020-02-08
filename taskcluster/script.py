@@ -48,30 +48,32 @@ class DebugPrinter:
             self.print_to_logcat(a_string)
 
 
-class TimeoutError(Exception):
+class MyTimeoutError(Exception):
     pass
 
 
 @contextmanager
-def timeout(time):
+def timeout(timeout_seconds):
     # Register a function to raise a TimeoutError on the signal.
     signal.signal(signal.SIGALRM, raise_timeout)
-    # Schedule the signal to be sent after ``time``.
-    signal.alarm(time)
+    # Schedule the signal to be sent after ``timeout_seconds``.
+    signal.alarm(timeout_seconds)
 
     try:
         yield
-    except TimeoutError:
+    except MyTimeoutError:
         pass
     finally:
         # Unregister the signal so it won't be triggered
         # if the timeout is not reached.
         signal.signal(signal.SIGALRM, signal.SIG_IGN)
 
+
 def raise_timeout(signum, frame):
     print("script.py: timeout at %s minutes" % TIMEOUT_MINUTES)
     subprocess.call(["/usr/bin/pstree", "-pct"])
-    raise TimeoutError
+    raise MyTimeoutError
+
 
 def fatal(message, exception=None, retry=True):
     """Emit an error message and exit the process with status
@@ -88,6 +90,7 @@ def fatal(message, exception=None, retry=True):
         print("{}: {}".format(exception.__class__.__name__, exception))
     sys.exit(exit_code)
 
+
 def show_df():
     try:
         print('\ndf -h\n%s\n\n' % subprocess.check_output(
@@ -95,6 +98,7 @@ def show_df():
             stderr=subprocess.STDOUT).decode())
     except subprocess.CalledProcessError as e:
         print('{} attempting df'.format(e))
+
 
 def get_device_type(device):
     device_type = device.shell_output("getprop ro.product.model", timeout=ADB_COMMAND_TIMEOUT)
@@ -107,6 +111,7 @@ def get_device_type(device):
     else:
         fatal("Unknown device ('%s')! Contact Android Relops immediately." % device_type, retry=False)
     return device_type
+
 
 def enable_charging(device, device_type):
     p2_path = "/sys/class/power_supply/battery/input_suspend"
@@ -148,10 +153,12 @@ def enable_charging(device, device_type):
         )
         print("{}: {}".format(e.__class__.__name__, e))
 
+
 def main():
     parser = argparse.ArgumentParser(
         usage='%(prog)s [options] <test command> (<test command option> ...)',
-        description="Wrapper script for tests run on physical Android devices at Bitbar. Runs the provided command wrapped with required setup and teardown.")
+        description="Wrapper script for tests run on physical Android devices at Bitbar. Runs the provided command "
+                    "wrapped with required setup and teardown.")
     _args, extra_args = parser.parse_known_args()
     logging.basicConfig(format='%(asctime)-15s %(levelname)s %(message)s',
                         level=logging.INFO,
