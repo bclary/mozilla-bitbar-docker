@@ -76,12 +76,6 @@ def timeout(timeout_seconds, a_dpi):
         signal.signal(signal.SIGALRM, signal.SIG_IGN)
 
 
-# def raise_timeout(signum, frame):
-#     print("script.py: timeout at %s minutes" % TIMEOUT_MINUTES)
-#     subprocess.call(["/usr/bin/pstree", "-pct"])
-#     raise MyTimeoutError
-
-
 def fatal(message, exception=None, retry=True):
     """Emit an error message and exit the process with status
     TBPL_RETRY_EXIT_STATUS this will cause the job to be retried.
