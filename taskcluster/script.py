@@ -8,12 +8,12 @@ import argparse
 import json
 import logging
 import os
+import signal
 import subprocess
 import sys
 import time
-from glob import glob
-import signal
 from contextlib import contextmanager
+from glob import glob
 
 from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
 
