@@ -50,10 +50,9 @@ class DebugPrinter:
 
     def raise_timeout(self, signum, frame):
         msg = "timeout at %s minutes" % TIMEOUT_MINUTES
-        print("script.py:" + msg)
         self.print_to_logcat(msg)
-        # TODO: capture and send to logcat
-        subprocess.call(["/usr/bin/pstree", "-pct"])
+        output = subprocess.getoutput(["/usr/bin/pstree", "-pct"])
+        self.print_to_logcat(output)
         raise MyTimeoutError
 
 
@@ -293,13 +292,11 @@ def main():
                 while temp_bytes_written != line_len:
                     temp_bytes_written += sys.stdout.write(decoded_line)
                     if temp_bytes_written != line_len:
-                        print("script.py: sys.stdout.write underwrite (%d vs %d)!" % (temp_bytes_written, line_len))
                         dpi.print_to_logcat("print underwrite: %d %d'" % (temp_bytes_written, line_len))
                 bytes_written += temp_bytes_written
             dpi.print_to_logcat_interval("ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
             if line_len == 0 and bytes_written == bytes_read and rc is not None:
                 break
-    print("script.py: command finished (bytes read: %s, bytes written: %s)" % (bytes_read, bytes_written))
     dpi.print_to_logcat("command finished: ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
 
     # enable charging on device if it is disabled
