@@ -37,6 +37,7 @@ RUN apt-get update && \
     sudo \
     tzdata \
     unzip \
+    vim \
     wget \
     xvfb \
     zip \
