@@ -235,6 +235,7 @@ def main():
                             env=env,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT)
+    dpi.print_to_logcat("script.py: command started")
     while True:
         line = proc.stdout.readline()
         decoded_line = line.decode()
@@ -247,7 +248,7 @@ def main():
                 temp_bytes_written += sys.stdout.write(decoded_line)
                 if temp_bytes_written != line_len:
                     print("script.py: sys.stdout.write underwrite (%d vs %d)!" % (temp_bytes_written, line_len))
-                    device.shell_output("log 'script.py: print underwrite: %d %d'" % (temp_bytes_written, line_len))
+                    dpi.print_to_logcat("print underwrite: %d %d'" % (temp_bytes_written, line_len))
             bytes_written += temp_bytes_written
         dpi.print_to_logcat_interval("ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
         if line_len == 0 and bytes_written == bytes_read and rc is not None:
