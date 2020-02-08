@@ -263,7 +263,7 @@ def main():
 
     # run the payload's command
     print("script.py: running command '%s'" % ' '.join(extra_args))
-    rc = 1
+    rc = None
     bytes_read = 0
     bytes_written = 0
     dpi = DebugPrinter(device)
