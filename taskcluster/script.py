@@ -49,6 +49,7 @@ class DebugPrinter:
 class TimeoutError(Exception):
     pass
 
+
 @contextmanager
 def timeout(time):
     # Register a function to raise a TimeoutError on the signal.
@@ -64,7 +65,6 @@ def timeout(time):
         # Unregister the signal so it won't be triggered
         # if the timeout is not reached.
         signal.signal(signal.SIGALRM, signal.SIG_IGN)
-
 
 def raise_timeout(signum, frame):
     print("script.py: timeout")
