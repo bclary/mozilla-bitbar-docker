@@ -19,6 +19,7 @@ from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
 
 MAX_NETWORK_ATTEMPTS = 3
 ADB_COMMAND_TIMEOUT = 10
+TIMEOUT_MINUTES = 44
 
 
 class DebugPrinter:
@@ -69,7 +70,7 @@ def timeout(time):
 
 
 def raise_timeout(signum, frame):
-    print("script.py: timeout")
+    print("script.py: timeout at %s minutes" % TIMEOUT_MINUTES)
     subprocess.call(["/usr/bin/pstree", "-pct"])
     raise TimeoutError
 
@@ -89,6 +90,7 @@ def fatal(message, exception=None, retry=True):
         print("{}: {}".format(exception.__class__.__name__, exception))
     sys.exit(exit_code)
 
+
 def show_df():
     try:
         print('\ndf -h\n%s\n\n' % subprocess.check_output(
@@ -96,6 +98,7 @@ def show_df():
             stderr=subprocess.STDOUT).decode())
     except subprocess.CalledProcessError as e:
         print('{} attempting df'.format(e))
+
 
 def get_device_type(device):
     device_type = device.shell_output("getprop ro.product.model", timeout=ADB_COMMAND_TIMEOUT)
@@ -149,6 +152,7 @@ def enable_charging(device, device_type):
             "TEST-WARNING | bitbar | Error while attempting to enable charging."
         )
         print("{}: {}".format(e.__class__.__name__, e))
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -260,8 +264,8 @@ def main():
     bytes_read = 0
     bytes_written = 0
     dpi = DebugPrinter(device)
-    # timeout in 44 minutes
-    with timeout(44 * 60):
+    # timeout in x minutes
+    with timeout(TIMEOUT_MINUTES * 60):
         proc = subprocess.Popen(extra_args,
                                 bufsize=0,
                                 env=env,
