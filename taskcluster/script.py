@@ -50,7 +50,7 @@ class DebugPrinter:
 
     def raise_timeout(self, signum, frame):
         self.print_to_logcat("timeout at %s minute(s)" % TIMEOUT_MINUTES)
-        output = subprocess.getoutput("/usr/bin/pstree -pct")
+        output = subprocess.getoutput("/usr/bin/pstree -aApct")
         self.print_to_logcat(output)
         raise MyTimeoutError
 
