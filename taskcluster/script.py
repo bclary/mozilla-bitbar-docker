@@ -68,7 +68,7 @@ def timeout(time):
 
 def raise_timeout(signum, frame):
     print("script.py: timeout")
-    subprocess.call("pstree -pct")
+    subprocess.call(["/usr/bin/pstree", "-pct"])
     raise TimeoutError
 
 def fatal(message, exception=None, retry=True):
@@ -257,7 +257,8 @@ def main():
     bytes_read = 0
     bytes_written = 0
     dpi = DebugPrinter(device)
-    with timeout(35):
+    # timeout in 44 minutes
+    with timeout(44 * 60):
         proc = subprocess.Popen(extra_args,
                                 bufsize=0,
                                 env=env,
