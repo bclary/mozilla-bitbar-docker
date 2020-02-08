@@ -22,7 +22,6 @@ ADB_COMMAND_TIMEOUT = 10
 
 
 class DebugPrinter:
-
     def __init__(self, device, seconds_to_wait_between_print=10):
         self.start_time = time.time()
         self.last_log_print_time = self.start_time
@@ -37,7 +36,9 @@ class DebugPrinter:
 
     def print_to_logcat(self, a_string):
         elapsed = self.get_elapsed_time()
-        self.adb_device.shell_output("log 'script.py: %s:+%s: %s'" % (self.get_start_time(), elapsed, a_string))
+        self.adb_device.shell_output(
+            "log 'script.py: %s:+%s: %s'" % (self.get_start_time(), elapsed, a_string)
+        )
 
     def print_to_logcat_interval(self, a_string):
         now = time.time()
@@ -66,10 +67,12 @@ def timeout(time):
         # if the timeout is not reached.
         signal.signal(signal.SIGALRM, signal.SIG_IGN)
 
+
 def raise_timeout(signum, frame):
     print("script.py: timeout")
     subprocess.call(["/usr/bin/pstree", "-pct"])
     raise TimeoutError
+
 
 def fatal(message, exception=None, retry=True):
     """Emit an error message and exit the process with status
