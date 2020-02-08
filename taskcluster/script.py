@@ -12,6 +12,8 @@ import subprocess
 import sys
 import time
 from glob import glob
+import signal
+from contextlib import contextmanager
 
 from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
 
@@ -43,6 +45,31 @@ class DebugPrinter:
             self.last_log_print_time = now
             self.print_to_logcat(a_string)
 
+
+class TimeoutError(Exception):
+    pass
+
+@contextmanager
+def timeout(time):
+    # Register a function to raise a TimeoutError on the signal.
+    signal.signal(signal.SIGALRM, raise_timeout)
+    # Schedule the signal to be sent after ``time``.
+    signal.alarm(time)
+
+    try:
+        yield
+    except TimeoutError:
+        pass
+    finally:
+        # Unregister the signal so it won't be triggered
+        # if the timeout is not reached.
+        signal.signal(signal.SIGALRM, signal.SIG_IGN)
+
+
+def raise_timeout(signum, frame):
+    print("script.py: timeout")
+    subprocess.call("pstree -pct")
+    raise TimeoutError
 
 def fatal(message, exception=None, retry=True):
     """Emit an error message and exit the process with status
@@ -230,29 +257,30 @@ def main():
     bytes_read = 0
     bytes_written = 0
     dpi = DebugPrinter(device)
-    proc = subprocess.Popen(extra_args,
-                            bufsize=0,
-                            env=env,
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT)
-    dpi.print_to_logcat("command started")
-    while True:
-        line = proc.stdout.readline()
-        decoded_line = line.decode()
-        line_len = len(decoded_line)
-        bytes_read += line_len
-        rc = proc.poll()
-        if line:
-            temp_bytes_written = 0
-            while temp_bytes_written != line_len:
-                temp_bytes_written += sys.stdout.write(decoded_line)
-                if temp_bytes_written != line_len:
-                    print("script.py: sys.stdout.write underwrite (%d vs %d)!" % (temp_bytes_written, line_len))
-                    dpi.print_to_logcat("print underwrite: %d %d'" % (temp_bytes_written, line_len))
-            bytes_written += temp_bytes_written
-        dpi.print_to_logcat_interval("ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
-        if line_len == 0 and bytes_written == bytes_read and rc is not None:
-            break
+    with timeout(35):
+        proc = subprocess.Popen(extra_args,
+                                bufsize=0,
+                                env=env,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT)
+        dpi.print_to_logcat("command started")
+        while True:
+            line = proc.stdout.readline()
+            decoded_line = line.decode()
+            line_len = len(decoded_line)
+            bytes_read += line_len
+            rc = proc.poll()
+            if line:
+                temp_bytes_written = 0
+                while temp_bytes_written != line_len:
+                    temp_bytes_written += sys.stdout.write(decoded_line)
+                    if temp_bytes_written != line_len:
+                        print("script.py: sys.stdout.write underwrite (%d vs %d)!" % (temp_bytes_written, line_len))
+                        dpi.print_to_logcat("print underwrite: %d %d'" % (temp_bytes_written, line_len))
+                bytes_written += temp_bytes_written
+            dpi.print_to_logcat_interval("ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
+            if line_len == 0 and bytes_written == bytes_read and rc is not None:
+                break
     print("script.py: command finished (bytes read: %s, bytes written: %s)" % (bytes_read, bytes_written))
     dpi.print_to_logcat("command finished: ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
 
