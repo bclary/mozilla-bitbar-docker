@@ -24,7 +24,7 @@ TIMEOUT_MINUTES = 44
 
 
 class DebugPrinter:
-    def __init__(self, device, seconds_to_wait_between_print=10):
+    def __init__(self, device, seconds_to_wait_between_print=20):
         self.start_time = time.time()
         self.last_log_print_time = self.start_time
         self.adb_device = device
@@ -48,12 +48,17 @@ class DebugPrinter:
         if now >= (self.last_log_print_time + self.seconds_to_wait):
             self.last_log_print_time = now
             self.print_to_logcat(a_string)
+            # show logcat output also
+            self.pstree_to_logcat()
 
     def raise_timeout(self, signum, frame):
         self.print_to_logcat("timeout at %s minute(s)" % TIMEOUT_MINUTES)
+        self.pstree_to_logcat()
+        raise MyTimeoutError
+
+    def pstree_to_logcat(self):
         output = subprocess.getoutput("/usr/bin/pstree -aApct")
         self.print_to_logcat("pstree: \n" + output + "\n")
-        raise MyTimeoutError
 
 
 class MyTimeoutError(Exception):
