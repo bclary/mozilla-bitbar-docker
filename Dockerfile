@@ -29,7 +29,7 @@ RUN apt-get update && \
     net-tools \
     netcat \
     openjdk-8-jdk-headless \
-    psmisc \ 
+    psmisc \
     python \
     python-pip \
     python3 \
@@ -37,7 +37,6 @@ RUN apt-get update && \
     sudo \
     tzdata \
     unzip \
-    vim \
     wget \
     xvfb \
     zip \
