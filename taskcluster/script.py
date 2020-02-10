@@ -278,9 +278,9 @@ def main():
             rc = proc.poll()
             if line:
                 temp_bytes_written = 0
-                while temp_bytes_written != line_len:
+                while temp_bytes_written <= line_len:
                     temp_bytes_written += sys.stdout.write(decoded_line)
-                    if temp_bytes_written != line_len:
+                    if temp_bytes_written <= line_len:
                         dpi.print_to_logcat("print underwrite: %d %d'" % (temp_bytes_written, line_len))
                 bytes_written += temp_bytes_written
             dpi.print_to_logcat_interval("ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
