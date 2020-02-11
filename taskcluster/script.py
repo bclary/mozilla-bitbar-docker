@@ -36,29 +36,30 @@ class DebugPrinter:
     def get_start_time(self):
         return self.start_time
 
-    def print_to_logcat(self, a_string, print_to_screen_also=True):
+    def debug_print(self, a_string, debug_print=False, print_to_screen=True):
         elapsed = self.get_elapsed_time()
         msg = "script.py: %s:+%s: %s" % (self.get_start_time(), elapsed, a_string)
-        if print_to_screen_also:
+        if print_to_screen:
             print(msg)
-        self.adb_device.shell_output("log %s" % shlex.quote(msg))
+        if debug_print:
+            self.adb_device.shell_output("log %s" % shlex.quote(msg))
 
-    def print_to_logcat_interval(self, a_string):
+    def debug_print_at_interval(self, a_string):
         now = time.time()
         if now >= (self.last_log_print_time + self.seconds_to_wait):
             self.last_log_print_time = now
-            self.print_to_logcat(a_string)
-            # show logcat output also
-            self.pstree_to_logcat()
+            self.debug_print(a_string)
+            # show pstree output also
+            self.pstree()
 
     def raise_timeout(self, signum, frame):
-        self.print_to_logcat("timeout at %s minute(s)" % TIMEOUT_MINUTES)
-        self.pstree_to_logcat()
+        self.debug_print("timeout at %s minute(s)" % TIMEOUT_MINUTES)
+        self.pstree()
         raise MyTimeoutError
 
-    def pstree_to_logcat(self):
+    def pstree(self):
         output = subprocess.getoutput("/usr/bin/pstree -aApct")
-        self.print_to_logcat("pstree: \n" + output + "\n")
+        self.debug_print("pstree: \n" + output + "\n")
 
 
 class MyTimeoutError(Exception):
@@ -274,7 +275,7 @@ def main():
                                 env=env,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT)
-        dpi.print_to_logcat("command started")
+        dpi.debug_print("command started")
         while True:
             line = proc.stdout.readline()
             decoded_line = line.decode()
@@ -286,12 +287,12 @@ def main():
                 while temp_bytes_written < line_len:
                     temp_bytes_written += sys.stdout.write(decoded_line)
                     if temp_bytes_written < line_len:
-                        dpi.print_to_logcat("print underwrite: %d %d'" % (temp_bytes_written, line_len))
+                        dpi.debug_print("print underwrite: %d %d'" % (temp_bytes_written, line_len))
                 bytes_written += temp_bytes_written
-            dpi.print_to_logcat_interval("ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
+            dpi.debug_print_at_interval("ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
             if line_len == 0 and bytes_written == bytes_read and rc is not None:
                 break
-    dpi.print_to_logcat("command finished: ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
+    dpi.debug_print("command finished: ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
