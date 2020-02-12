@@ -8,12 +8,15 @@ import argparse
 import json
 import logging
 import os
+import queue
 import shlex
 import signal
 import subprocess
 import sys
+import threading
 import time
 from contextlib import contextmanager
+from datetime import datetime
 from glob import glob
 
 from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
@@ -157,6 +160,16 @@ def enable_charging(device, device_type):
         )
         print("{}: {}".format(e.__class__.__name__, e))
 
+def _monitor_readline(process, q):
+    while True:
+        bail = True
+        if process.poll() is None:
+            bail = False
+        out = process.stdout.readline().decode()
+        q.put(out)
+        if q.empty() and bail:
+            break
+
 def main():
     parser = argparse.ArgumentParser(
         usage='%(prog)s [options] <test command> (<test command option> ...)',
@@ -277,12 +290,47 @@ def main():
                                 stderr=subprocess.STDOUT,
                                 close_fds=True)
         dpi.debug_print("command started")
+
+        #### non-blocking
+        # Create the queue instance
+        q = queue.Queue()
+        # Kick off the monitoring thread
+        thread = threading.Thread(target=_monitor_readline, args=(proc, q))
+        thread.daemon = True
+        thread.start()
+        start = datetime.now()
+        while True:
+            bail = True
+            rc = proc.poll()
+            if rc is None:
+                bail = False
+                # Re-set the thread timer
+                start = datetime.now()
+            out = ""
+            while not q.empty():
+                out += q.get()
+            if out:
+                print(out.rstrip())
+
+            # In the case where the thread is still alive and reading, and
+            # the process has exited and finished, give it up to X seconds
+            # to finish reading
+            if bail and thread.is_alive() and (datetime.now() - start).total_seconds() < 5:
+                bail = False
+            if bail:
+                break
+        #### MEGA 2
+        # while True:
+        #     line = proc.stdout.readline().decode().rstrip()
+        #     if line == b'':
+        #         break
+        #     yield line
         #### MEGA SIMPLIFIED
-        for line in proc.stdout:
-            dpi.debug_print_at_interval("checkpoint")
-            # print(line.decode().rstrip())
-            sys.stdout.write(line.decode())
-        rc = proc.poll()
+        # for line in proc.stdout:
+        #     dpi.debug_print_at_interval("checkpoint")
+        #     # print(line.decode().rstrip())
+        #     sys.stdout.write(line.decode())
+        # rc = proc.poll()
         #### OLD CODE
         # while True:
         #     line = proc.stdout.readline()
