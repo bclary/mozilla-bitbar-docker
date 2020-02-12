@@ -315,6 +315,10 @@ def main():
 
     show_df()
 
+    if rc is None:
+        print("script.py: setting exit code to 1 due to timeout")
+        rc = 1
+
     print('script.py: exiting with exitcode {}.'.format(rc))
     return rc
 
