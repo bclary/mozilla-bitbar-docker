@@ -9,13 +9,9 @@ import json
 import logging
 import os
 import queue
-import shlex
-import signal
 import subprocess
 import sys
 import threading
-import time
-from contextlib import contextmanager
 from datetime import datetime
 from glob import glob
 
