@@ -274,25 +274,31 @@ def main():
                                 bufsize=0,
                                 env=env,
                                 stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT)
+                                stderr=subprocess.STDOUT,
+                                close_fds=True)
         dpi.debug_print("command started")
-        while True:
-            line = proc.stdout.readline()
-            decoded_line = line.decode()
-            line_len = len(decoded_line)
-            bytes_read += line_len
-            rc = proc.poll()
-            if line:
-                temp_bytes_written = 0
-                while temp_bytes_written < line_len:
-                    temp_bytes_written += sys.stdout.write(decoded_line)
-                    if temp_bytes_written < line_len:
-                        dpi.debug_print("print underwrite: %d %d'" % (temp_bytes_written, line_len))
-                bytes_written += temp_bytes_written
-            dpi.debug_print_at_interval("ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
-            if line_len == 0 and bytes_written == bytes_read and rc is not None:
-                break
-    dpi.debug_print("command finished: ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
+        #### MEGA SIMPLIFIED
+        for line in proc.stdout:
+            print(line.decode())
+        #### OLD CODE
+        # while True:
+        #     line = proc.stdout.readline()
+        #     decoded_line = line.decode()
+        #     line_len = len(decoded_line)
+        #     bytes_read += line_len
+        #     rc = proc.poll()
+        #     if line:
+        #         bytes_written += sys.stdout.write(decoded_line)
+        #         # temp_bytes_written = 0
+        #         # while temp_bytes_written < line_len:
+        #         #     temp_bytes_written += sys.stdout.write(decoded_line)
+        #         #     if temp_bytes_written < line_len:
+        #         #         dpi.debug_print("print underwrite: %d %d'" % (temp_bytes_written, line_len))
+        #         # bytes_written += temp_bytes_written
+        #     dpi.debug_print_at_interval("ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
+        #     if rc is not None:
+        #         break
+    dpi.debug_print("command finished") #: ll:%s bw:%s br:%s rc:%s" % (line_len, bytes_written, bytes_read, rc))
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
