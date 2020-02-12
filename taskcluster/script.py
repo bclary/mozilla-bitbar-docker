@@ -20,7 +20,7 @@ from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
 
 MAX_NETWORK_ATTEMPTS = 3
 ADB_COMMAND_TIMEOUT = 10
-TIMEOUT_MINUTES = 44
+TIMEOUT_MINUTES = 10
 
 
 class DebugPrinter:
