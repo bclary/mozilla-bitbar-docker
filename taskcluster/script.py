@@ -279,7 +279,9 @@ def main():
         dpi.debug_print("command started")
         #### MEGA SIMPLIFIED
         for line in proc.stdout:
-            print(line.decode())
+            dpi.debug_print_at_interval("checkpoint")
+            # print(line.decode().rstrip())
+            sys.stdout.write(line.decode())
         #### OLD CODE
         # while True:
         #     line = proc.stdout.readline()
