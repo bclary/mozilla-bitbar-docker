@@ -211,7 +211,7 @@ def main():
     print('environment = {}'.format(json.dumps(env, indent=4)))
 
     # run the payload's command
-    # - do non-blocking reads of process' output, ensure all output is printed
+    # - do non-blocking reads of the process's output, ensure all output is printed
     #   - see https://stackoverflow.com/questions/58471094/python-subprocess-readline-hangs-cant-use-normal-options
     print("script.py: running command '%s'" % ' '.join(extra_args))
     rc = None
