@@ -282,6 +282,7 @@ def main():
             dpi.debug_print_at_interval("checkpoint")
             # print(line.decode().rstrip())
             sys.stdout.write(line.decode())
+        rc = proc.poll()
         #### OLD CODE
         # while True:
         #     line = proc.stdout.readline()
