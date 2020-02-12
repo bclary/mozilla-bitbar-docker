@@ -100,15 +100,19 @@ def enable_charging(device, device_type):
         print("{}: {}".format(e.__class__.__name__, e))
 
 
-def _monitor_readline(process, q):
-    while True:
-        bail = True
-        if process.poll() is None:
-            bail = False
+def _monitor_readline(process, q, timeout=5):
+    start = datetime.now()
+    rc = process.poll()
+    while rc is None or (datetime.now() - start).total_seconds() <= timeout:
+        # rc is None means process is still running.
+        # If is not None, the process has completed. Keep trying to collect data for timeout seconds.
         out = process.stdout.readline().decode()
-        q.put(out)
-        if q.empty() and bail:
-            break
+        if out:
+            q.put(out)
+        rc = process.poll()
+        if rc is None:
+            # process is running, reset the start time.
+            start = datetime.now()
 
 
 def main():
@@ -232,31 +236,17 @@ def main():
                             close_fds=True)
     # Create the queue instance
     q = queue.Queue()
+    read_timeout = 5
     # Kick off the monitoring thread
-    thread = threading.Thread(target=_monitor_readline, args=(proc, q))
+    thread = threading.Thread(target=_monitor_readline, args=(proc, q, read_timeout))
     thread.daemon = True
     thread.start()
-    start = datetime.now()
-    while True:
-        bail = True
-        rc = proc.poll()
-        if rc is None:
-            bail = False
-            # Re-set the thread timer
-            start = datetime.now()
+    while thread.is_alive():
         out = ""
         while not q.empty():
             out += q.get()
         if out:
             print(out.rstrip())
-
-        # In the case where the thread is still alive and reading, and
-        # the process has exited and finished, give it up to X seconds
-        # to finish reading
-        if bail and thread.is_alive() and (datetime.now() - start).total_seconds() < 5:
-            bail = False
-        if bail:
-            break
     print("script.py: command finished")
 
     # enable charging on device if it is disabled
