@@ -292,6 +292,8 @@ def main():
         dpi.debug_print("command started")
 
         #### non-blocking
+        # see https://stackoverflow.com/questions/58471094/python-subprocess-readline-hangs-cant-use-normal-options
+
         # Create the queue instance
         q = queue.Queue()
         # Kick off the monitoring thread
