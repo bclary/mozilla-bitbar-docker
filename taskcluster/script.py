@@ -8,15 +8,21 @@ import argparse
 import json
 import logging
 import os
+import queue
+import shlex
+import signal
 import subprocess
 import sys
+import threading
+import time
+from contextlib import contextmanager
+from datetime import datetime
 from glob import glob
 
 from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
 
 MAX_NETWORK_ATTEMPTS = 3
 ADB_COMMAND_TIMEOUT = 10
-
 
 def fatal(message, exception=None, retry=True):
     """Emit an error message and exit the process with status
@@ -52,7 +58,6 @@ def get_device_type(device):
     else:
         fatal("Unknown device ('%s')! Contact Android Relops immediately." % device_type, retry=False)
     return device_type
-
 
 def enable_charging(device, device_type):
     p2_path = "/sys/class/power_supply/battery/input_suspend"
@@ -94,10 +99,21 @@ def enable_charging(device, device_type):
         )
         print("{}: {}".format(e.__class__.__name__, e))
 
+def _monitor_readline(process, q):
+    while True:
+        bail = True
+        if process.poll() is None:
+            bail = False
+        out = process.stdout.readline().decode()
+        q.put(out)
+        if q.empty() and bail:
+            break
+
 def main():
     parser = argparse.ArgumentParser(
         usage='%(prog)s [options] <test command> (<test command option> ...)',
-        description="Wrapper script for tests run on physical Android devices at Bitbar. Runs the provided command wrapped with required setup and teardown.")
+        description="Wrapper script for tests run on physical Android devices at Bitbar. Runs the provided command "
+                    "wrapped with required setup and teardown.")
     _args, extra_args = parser.parse_known_args()
     logging.basicConfig(format='%(asctime)-15s %(levelname)s %(message)s',
                         level=logging.INFO,
@@ -199,26 +215,44 @@ def main():
     print('environment = {}'.format(json.dumps(env, indent=4)))
 
     # run the payload's command
+    # - do non-blocking reads of process' output, ensure all output is printed
+    #   - see https://stackoverflow.com/questions/58471094/python-subprocess-readline-hangs-cant-use-normal-options
     print("script.py: running command '%s'" % ' '.join(extra_args))
     rc = None
-    bytes_read = 0
-    bytes_written = 0
     proc = subprocess.Popen(extra_args,
                             bufsize=0,
                             env=env,
                             stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT)
+                            stderr=subprocess.STDOUT,
+                            close_fds=True)
+    # Create the queue instance
+    q = queue.Queue()
+    # Kick off the monitoring thread
+    thread = threading.Thread(target=_monitor_readline, args=(proc, q))
+    thread.daemon = True
+    thread.start()
+    start = datetime.now()
     while True:
-        line = proc.stdout.readline()
-        decoded_line = line.decode()
-        line_len = len(decoded_line)
-        bytes_read += line_len
+        bail = True
         rc = proc.poll()
-        if line:
-            bytes_written += sys.stdout.write(decoded_line)
-        if line_len == 0 and bytes_written == bytes_read and rc is not None:
+        if rc is None:
+            bail = False
+            # Re-set the thread timer
+            start = datetime.now()
+        out = ""
+        while not q.empty():
+            out += q.get()
+        if out:
+            print(out.rstrip())
+
+        # In the case where the thread is still alive and reading, and
+        # the process has exited and finished, give it up to X seconds
+        # to finish reading
+        if bail and thread.is_alive() and (datetime.now() - start).total_seconds() < 5:
+            bail = False
+        if bail:
             break
-    print("script.py: command finished (bytes read: %s, bytes written: %s)" % (bytes_read, bytes_written))
+    print("script.py: command finished")
 
     # enable charging on device if it is disabled
     #   see https://bugzilla.mozilla.org/show_bug.cgi?id=1565324
@@ -240,6 +274,10 @@ def main():
         print('{} attempting netstat'.format(e))
 
     show_df()
+
+    if rc is None:
+        print("script.py: setting exit code to 1 due to timeout")
+        rc = 1
 
     print('script.py: exiting with exitcode {}.'.format(rc))
     return rc
