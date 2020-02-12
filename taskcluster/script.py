@@ -216,8 +216,9 @@ def main():
 
     print('environment = {}'.format(json.dumps(env, indent=4)))
 
-    # run the payload's command
-    # - do non-blocking reads of the process's output, ensure all output is printed
+    # run the payload's command and ensure that:
+    # - all output is printed
+    # - no deadlock occurs between proc.poll() and sys.stdout.readline()
     #   - more info
     #     - https://bugzilla.mozilla.org/show_bug.cgi?id=1611936
     #     - https://stackoverflow.com/questions/58471094/python-subprocess-readline-hangs-cant-use-normal-options
