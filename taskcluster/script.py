@@ -20,6 +20,7 @@ from mozdevice import ADBDevice, ADBError, ADBHost, ADBTimeoutError
 MAX_NETWORK_ATTEMPTS = 3
 ADB_COMMAND_TIMEOUT = 10
 
+
 def fatal(message, exception=None, retry=True):
     """Emit an error message and exit the process with status
     TBPL_RETRY_EXIT_STATUS this will cause the job to be retried.
@@ -35,6 +36,7 @@ def fatal(message, exception=None, retry=True):
         print("{}: {}".format(exception.__class__.__name__, exception))
     sys.exit(exit_code)
 
+
 def show_df():
     try:
         print('\ndf -h\n%s\n\n' % subprocess.check_output(
@@ -42,6 +44,7 @@ def show_df():
             stderr=subprocess.STDOUT).decode())
     except subprocess.CalledProcessError as e:
         print('{} attempting df'.format(e))
+
 
 def get_device_type(device):
     device_type = device.shell_output("getprop ro.product.model", timeout=ADB_COMMAND_TIMEOUT)
@@ -54,6 +57,7 @@ def get_device_type(device):
     else:
         fatal("Unknown device ('%s')! Contact Android Relops immediately." % device_type, retry=False)
     return device_type
+
 
 def enable_charging(device, device_type):
     p2_path = "/sys/class/power_supply/battery/input_suspend"
@@ -95,6 +99,7 @@ def enable_charging(device, device_type):
         )
         print("{}: {}".format(e.__class__.__name__, e))
 
+
 def _monitor_readline(process, q):
     while True:
         bail = True
@@ -104,6 +109,7 @@ def _monitor_readline(process, q):
         q.put(out)
         if q.empty() and bail:
             break
+
 
 def main():
     parser = argparse.ArgumentParser(
