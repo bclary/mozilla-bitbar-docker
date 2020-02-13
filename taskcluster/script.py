@@ -249,6 +249,7 @@ def main():
             sys.stdout.write(q.get())
     while not q.empty():
         sys.stdout.write(q.get())
+    rc = proc.poll()
     print("script.py: command finished")
 
     # enable charging on device if it is disabled
