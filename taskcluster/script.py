@@ -225,7 +225,8 @@ def main():
     print("script.py: running command '%s'" % ' '.join(extra_args))
     rc = None
     proc = subprocess.Popen(extra_args,
-                            bufsize=0,
+                            # use standard os buffer size
+                            bufsize=-1,
                             env=env,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT,
