@@ -103,16 +103,18 @@ def enable_charging(device, device_type):
 def _monitor_readline(process, q, timeout=5):
     start = datetime.now()
     rc = process.poll()
-    while rc is None or (datetime.now() - start).total_seconds() <= timeout:
-        # rc is None means process is still running.
-        # If is not None, the process has completed. Keep trying to collect data for timeout seconds.
-        out = process.stdout.readline().decode()
-        if out:
-            q.put(out)
+    more_data = True
+    while more_data:
+        data = process.stdout.readline()
+        if data:
+            q.put(data)
         rc = process.poll()
         if rc is None:
             # process is running, reset the start time.
             start = datetime.now()
+        else:
+            # process is finished, continue while
+            more_data = data and (datetime.now() - start). total_seconds() <= timeout
 
 
 def main():
@@ -229,11 +231,12 @@ def main():
     print("script.py: running command '%s'" % ' '.join(extra_args))
     rc = None
     proc = subprocess.Popen(extra_args,
-                            bufsize=0,
+                            bufsize=-1,
                             env=env,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT,
-                            close_fds=True)
+                            close_fds=True,
+                            encoding='utf-8')
     # Create the queue instance
     q = queue.Queue()
     read_timeout = 5
@@ -242,11 +245,10 @@ def main():
     thread.daemon = True
     thread.start()
     while thread.is_alive():
-        out = ""
-        while not q.empty():
-            out += q.get()
-        if out:
-            print(out.rstrip())
+        if not q.empty():
+            sys.stdout.write(q.get())
+    while not q.empty():
+        sys.stdout.write(q.get())
     print("script.py: command finished")
 
     # enable charging on device if it is disabled
