@@ -8,3 +8,7 @@ stackdriver_credentials.json
 
 .idea
 .vscode
+
+
+*.sh
+*.conf
