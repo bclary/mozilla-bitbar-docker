@@ -5,3 +5,6 @@ build/
 downloads/
 *.pyc
 stackdriver_credentials.json
+
+.idea
+.vscode
