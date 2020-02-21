@@ -12,6 +12,7 @@ import queue
 import subprocess
 import sys
 import threading
+import time
 from datetime import datetime
 from glob import glob
 
@@ -239,6 +240,7 @@ def main():
     thread.start()
     start = datetime.now()
     while True:
+        time.sleep(0.1)
         bail = True
         rc = proc.poll()
         if rc is None:
