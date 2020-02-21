@@ -10,5 +10,5 @@ stackdriver_credentials.json
 .vscode
 
 
-*.sh
-*.conf
+/*.sh
+/*.conf
