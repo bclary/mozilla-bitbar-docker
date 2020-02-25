@@ -1,9 +1,10 @@
-*.git*
+.*
 *~
 .dockerignore
 LICENSE
 README.md
 *.sh
+*.conf
 downloads/*
 build/*
 tests/*
