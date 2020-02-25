@@ -2,4 +2,8 @@
 
 set -e
 
-entrypoint.sh
+# original
+#entrypoint.sh
+
+# with timeout
+( entrypoint.sh ) & sleep 10 ; kill $!
