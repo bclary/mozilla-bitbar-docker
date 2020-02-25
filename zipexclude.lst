@@ -3,7 +3,8 @@
 .dockerignore
 LICENSE
 README.md
-build.sh
+*.sh
 downloads/*
 build/*
+tests/*
 zipexclude.lst
