@@ -2,6 +2,7 @@
 
 set -e
 
-# TODO: refactor entrypoint.sh to separate scripts so we don't have to ctrl-c entrypoint.sh
-adb connect host.docker.internal
-entrypoint.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+$DIR/__adb_to_vm.sh
+$DIR/__entrypoint.sh
