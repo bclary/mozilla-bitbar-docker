@@ -2,4 +2,4 @@
 
 set -e
 
-/builds/taskcluster/script.py '/bin/bash' '-c' './test.py'
+time /builds/taskcluster/script.py$1 '/bin/bash' '-c' './test.py'
