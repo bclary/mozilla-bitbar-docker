@@ -53,7 +53,7 @@ def get_device_type(device):
         pass
     elif device_type == "Moto G (5)":
         pass
-    elif device_type == "Android SDK built for x86":
+    elif device_type == "Android SDK built for x86" or device_type == "AOSP on IA Emulator":
         pass
     else:
         fatal("Unknown device ('%s')! Contact Android Relops immediately." % device_type, retry=False)
@@ -90,7 +90,7 @@ def enable_charging(device, device_type):
                 device.shell_bool(
                     "echo %s > %s" % (1, g5_path), root=True, timeout=ADB_COMMAND_TIMEOUT
                 )
-        elif device_type == "Android SDK built for x86":
+        elif device_type == "Android SDK built for x86" or device_type == 'AOSP on IA Emulator':
             pass
         else:
             fatal("Unknown device ('%s')! Contact Android Relops immediately." % device_type, retry=False)
