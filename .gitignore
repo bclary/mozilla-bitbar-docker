@@ -6,9 +6,10 @@ downloads/
 *.pyc
 stackdriver_credentials.json
 
+# ignore IDE files
 .idea
 .vscode
 
-
+# ignore any new .sh and .conf files
 /*.sh
 /*.conf
