@@ -26,6 +26,7 @@ RUN apt-get update && \
     libssl-dev \
     libswscale-dev \
     locales \
+    mercurial \
     net-tools \
     netcat \
     openjdk-8-jdk-headless \
