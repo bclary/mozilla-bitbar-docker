@@ -92,7 +92,7 @@ ADD https://hg.mozilla.org/hgcustom/version-control-tools/raw-file/tip/hgext/rob
 # COPY downloads/livelog-linux-amd64 /usr/local/bin/livelog
 # COPY downloads/taskcluster-proxy-linux-amd64 /usr/local/bin/taskcluster-proxy
 # COPY downloads/start-worker-linux-amd64 /usr/local/bin/start-worker
-# COPY downloads/robustcheckout.py /usr/local/src/robustcheckout.py
+# COPY downloads/__init__.py /usr/local/src/robustcheckout.py
 
 # copy stackdriver credentials over
 COPY stackdriver_credentials.json /etc/google/stackdriver_credentials.json
