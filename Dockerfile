@@ -82,6 +82,7 @@ ADD https://github.com/taskcluster/generic-worker/releases/download/v16.0.0/gene
 ADD https://github.com/taskcluster/livelog/releases/download/v1.1.0/livelog-linux-amd64 /usr/local/bin/livelog
 ADD https://github.com/taskcluster/taskcluster-proxy/releases/download/v5.1.0/taskcluster-proxy-linux-amd64 /usr/local/bin/taskcluster-proxy
 ADD https://github.com/taskcluster/taskcluster-worker-runner/releases/download/v1.0.4/start-worker-linux-amd64 /usr/local/bin/start-worker
+ADD https://hg.mozilla.org/mozilla-central/raw-file/tip/testing/mozharness/external_tools/robustcheckout.py /usr/local/src/robustcheckout.py
 
 # for testing builds (these lines mirror above), copy above artifacts from the downloads dir
 # COPY downloads/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
@@ -91,6 +92,7 @@ ADD https://github.com/taskcluster/taskcluster-worker-runner/releases/download/v
 # COPY downloads/livelog-linux-amd64 /usr/local/bin/livelog
 # COPY downloads/taskcluster-proxy-linux-amd64 /usr/local/bin/taskcluster-proxy
 # COPY downloads/start-worker-linux-amd64 /usr/local/bin/start-worker
+# COPY downloads/robustcheckout.py /usr/local/src/robustcheckout.py
 
 # copy stackdriver credentials over
 COPY stackdriver_credentials.json /etc/google/stackdriver_credentials.json
@@ -100,6 +102,7 @@ COPY .bashrc /builds/worker/.bashrc
 COPY version /builds/worker/version
 COPY taskcluster /builds/taskcluster
 COPY licenses /builds/worker/android-sdk-linux/licenses
+COPY taskcluster/hgrc /etc/mercurial/hgrc.d/mozilla.rc
 
 # Add entrypoint script
 COPY scripts/entrypoint.py /usr/local/bin/entrypoint.py
@@ -122,6 +125,7 @@ RUN cd /tmp && \
     chmod +x /usr/local/bin/tooltool.py && \
     chmod +x /usr/local/bin/entrypoint.* && \
     chmod +x /builds/taskcluster/script.py && \
+    chmod 644 /usr/local/src/robustcheckout.py && \
     mkdir /root/.android && \
     touch /root/.android/repositories.cfg && \
     tar xzf /builds/worker/Downloads/node-v8.11.3-linux-x64.tar.gz -C /usr/local --strip-components 1 && \
