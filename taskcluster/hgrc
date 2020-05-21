@@ -31,3 +31,4 @@ showfunc = 1
 
 [pager]
 pager = LESS=FRSXQ less
+
