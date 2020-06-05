@@ -140,8 +140,8 @@ RUN cd /tmp && \
     # pips used by scripts in this docker image
     pip install google-cloud-logging && \
     pip3 install google-cloud-logging && \
-    pip install mozdevice==3.0.7 && \
-    pip3 install mozdevice==3.0.7 && \
+    pip install mozdevice==3.2.3 && \
+    pip3 install mozdevice==3.2.3 && \
     # pips used by jobs
     pip install zstandard==0.11.1 && \
     pip3 install zstandard==0.11.1 && \
