@@ -78,10 +78,10 @@ ENV    HOME=/builds/worker \
 ADD https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.gz /builds/worker/Downloads
 ADD https://dl.google.com/android/android-sdk_r24.3.4-linux.tgz /builds/worker/Downloads
 ADD https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip /builds/worker/Downloads
-ADD https://github.com/taskcluster/generic-worker/releases/download/v16.0.0/generic-worker-simple-linux-amd64 /usr/local/bin/generic-worker
-ADD https://github.com/taskcluster/livelog/releases/download/v1.1.0/livelog-linux-amd64 /usr/local/bin/livelog
-ADD https://github.com/taskcluster/taskcluster-proxy/releases/download/v5.1.0/taskcluster-proxy-linux-amd64 /usr/local/bin/taskcluster-proxy
-ADD https://github.com/taskcluster/taskcluster-worker-runner/releases/download/v1.0.4/start-worker-linux-amd64 /usr/local/bin/start-worker
+ADD https://github.com/taskcluster/taskcluster/releases/download/v30.0.2/generic-worker-simple-linux-amd64 /usr/local/bin/generic-worker
+ADD https://github.com/taskcluster/taskcluster/releases/download/v30.0.2/livelog-linux-amd64 /usr/local/bin/livelog
+ADD https://github.com/taskcluster/taskcluster/releases/download/v30.0.2/taskcluster-proxy-linux-amd64 /usr/local/bin/taskcluster-proxy
+ADD https://github.com/taskcluster/taskcluster/releases/download/v30.0.2/start-worker-linux-amd64 /usr/local/bin/start-worker
 ADD https://hg.mozilla.org/hgcustom/version-control-tools/raw-file/tip/hgext/robustcheckout/__init__.py /usr/local/src/robustcheckout.py
 
 # for testing builds (these lines mirror above), copy above artifacts from the downloads dir
