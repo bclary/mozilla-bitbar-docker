@@ -9,6 +9,7 @@ RUN apt-get update && \
     ffmpeg \
     gettext-base \
     git \
+    imagemagick \
     lib32stdc++6 \
     lib32z1 \
     libavcodec-dev \
