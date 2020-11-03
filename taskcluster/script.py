@@ -53,6 +53,9 @@ def get_device_type(device):
         pass
     elif device_type == "Moto G (5)":
         pass
+    elif device_type == "SM-G930F";
+        # samsung s7 galaxy (exynos)
+        pass
     elif device_type == "Android SDK built for x86":
         pass
     else:
@@ -63,6 +66,7 @@ def get_device_type(device):
 def enable_charging(device, device_type):
     p2_path = "/sys/class/power_supply/battery/input_suspend"
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
+    s7_path = "/sys/class/power_supply/battery/batt_slate_mode"
 
     try:
         print("script.py: enabling charging for device '%s' ('%s')..." % (device_type, device.get_info('id')['id']))
@@ -89,6 +93,18 @@ def enable_charging(device, device_type):
                 print("Enabling charging...")
                 device.shell_bool(
                     "echo %s > %s" % (1, g5_path), root=True, timeout=ADB_COMMAND_TIMEOUT
+                )
+        elif device_type == "SM-G930F":
+            s7_charging_disabled = (
+                device.shell_output(
+                    "cat %s 2>/dev/null" % s7_path, timeout=ADB_COMMAND_TIMEOUT
+                ).strip()
+                == "1"
+            )
+            if s7_charging_disabled:
+                print("Enabling charging...")
+                device.shell_bool(
+                    "echo %s > %s" % (0, s7_path), root=True, timeout=ADB_COMMAND_TIMEOUT
                 )
         elif device_type == "Android SDK built for x86":
             pass
