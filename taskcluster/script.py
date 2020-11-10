@@ -68,6 +68,10 @@ def enable_charging(device, device_type):
     g5_path = "/sys/class/power_supply/battery/charging_enabled"
     s7_path = "/sys/class/power_supply/battery/batt_slate_mode"
 
+    if not device.is_rooted:
+        print("enable_charging: device is not rooted, not enabling.")
+        return
+
     try:
         print("script.py: enabling charging for device '%s' ('%s')..." % (device_type, device.get_info('id')['id']))
         if device_type == "Pixel 2":
@@ -80,7 +84,7 @@ def enable_charging(device, device_type):
             if p2_charging_disabled:
                 print("Enabling charging...")
                 device.shell_bool(
-                    "echo %s > %s" % (0, p2_path), root=True, timeout=ADB_COMMAND_TIMEOUT
+                    "echo %s > %s" % (0, p2_path), timeout=ADB_COMMAND_TIMEOUT
                 )
         elif device_type == "Moto G (5)":
             g5_charging_disabled = (
@@ -92,7 +96,7 @@ def enable_charging(device, device_type):
             if g5_charging_disabled:
                 print("Enabling charging...")
                 device.shell_bool(
-                    "echo %s > %s" % (1, g5_path), root=True, timeout=ADB_COMMAND_TIMEOUT
+                    "echo %s > %s" % (1, g5_path), timeout=ADB_COMMAND_TIMEOUT
                 )
         elif device_type == "SM-G930F":
             s7_charging_disabled = (
@@ -214,17 +218,18 @@ def main():
         # this can explode if an unknown device, explode now vs in an hour...
         device_type = get_device_type(device)
         # set device to UTC
-        device.shell_output('setprop persist.sys.timezone "UTC"', root=True, timeout=ADB_COMMAND_TIMEOUT)
+        if device.is_rooted:
+            device.shell_output('setprop persist.sys.timezone "UTC"', timeout=ADB_COMMAND_TIMEOUT)
         # show date for visual confirmation
         device_datetime = device.shell_output("date", timeout=ADB_COMMAND_TIMEOUT)
         print('Android device datetime:  {}'.format(device_datetime))
 
         # clean up the device.
-        device.rm('/data/local/tests', recursive=True, force=True, root=True)
-        device.rm('/data/local/tmp/*', recursive=True, force=True, root=True)
-        device.rm('/data/local/tmp/xpcb', recursive=True, force=True, root=True)
-        device.rm('/sdcard/tests', recursive=True, force=True, root=True)
-        device.rm('/sdcard/raptor-profile', recursive=True, force=True, root=True)
+        device.rm('/data/local/tests', recursive=True, force=True)
+        device.rm('/data/local/tmp/*', recursive=True, force=True)
+        device.rm('/data/local/tmp/xpcb', recursive=True, force=True)
+        device.rm('/sdcard/tests', recursive=True, force=True)
+        device.rm('/sdcard/raptor-profile', recursive=True, force=True)
     except (ADBError, ADBTimeoutError) as e:
         fatal("{} attempting to clean up device".format(e), retry=True)
 
