@@ -4,6 +4,9 @@ Definition for Mozilla Docker images used at Bitbar
 This repository contains the definition for the Docker images used to
 run Android Hardware based testing at Bitbar.com.
 
+This repository has been archived. Active development has moved to
+[mozilla-platform-ops/mozilla-bitbar-docker](https://github.com/mozilla-platform-ops/mozilla-bitbar-docker)
+
 ## Building a Bitbar docker image test zip file
 
 ### Accept Android Licenses
